@@ -5,7 +5,7 @@ import { Poppins } from "next/font/google";
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 const APP_NAME = "Reedee";
-const APP_DESCRIPTION = "A modern document reader, for the web.";
+const APP_DESCRIPTION = "Enable your reading superpower.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
