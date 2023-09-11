@@ -1,7 +1,8 @@
-'use server'
+// 'use server'
 
-import Image from "next/image"
+// import {openDB, deleteDB, wrap, unwrap} from 'idb'
 
-export async function saveToDatabase() {
-    
-}
+// export async function saveToDatabase() {
+//     const db = await openDB()
+
+// }
