@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={` bg-[url('..//public/Looper.svg')] bg-black mx-auto max-w-md ${poppins.className}`}
+        className={` bg-[url('..//public/Looper.svg')] bg-black ${poppins.className}`}
         style={{ backgroundSize: "cover" }}
       >
         {children}

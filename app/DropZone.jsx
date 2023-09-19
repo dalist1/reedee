@@ -1,24 +1,75 @@
 "use client";
 
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
+
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-// import { saveToDatabase } from "./_actions";
 import { VscFiles } from "react-icons/vsc";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { pdfjs } from "react-pdf";
+import { saveToDatabase, removeFiles, removeAllFiles } from "./_actions";
+
+// Helper function
+async function extractTextFromPage(pdf, pageNumber) {
+  const page = await pdf.getPage(pageNumber);
+  const textContent = await page.getTextContent();
+  const strings = textContent.items.map((item) => item.str);
+  return strings.join(" ");
+}
 
 export default function DropZone({ className }) {
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
+  const [text, setText] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
 
   // Implementing onDrop functionality
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-    if (acceptedFiles?.length) {
-      setFiles((previousFiles) => [
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, { preview: URL.createObjectURL(file) })
-        ),
-      ]);
-    }
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        const blob = new Blob([reader.result], { type: file.type });
+        const blobURL = URL.createObjectURL(blob);
+        setFiles((previousFiles) => [...previousFiles, blobURL]);
+
+        // Creating the PDF object
+        const pdf = await pdfjs.getDocument(blobURL).promise;
+        
+        // Parsing file metadata
+        const metadata = await pdf.getMetadata();
+        authorName = metadata.info.Author
+        title = metadata.info.Title
+
+        // Extract text
+        const text = await extractTextFromPage(pdf, 1);
+        setText(text);
+
+        // Generate thumbnail
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 1 });
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        await page.render({ canvasContext: context, viewport }).promise;
+        const thumbnail = canvas.toDataURL();
+        setThumbnail(thumbnail);
+
+        // Save to db
+        await saveToDatabase(file, thumbnail, authorName, title);
+
+      };
+
+      reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
 
     if (rejectedFiles?.length) {
       setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
@@ -27,34 +78,33 @@ export default function DropZone({ className }) {
 
   // DropZone Hook
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: {
-      "image/*": [],
-    },
-    maxSize: 1024 * 1000,
+    accept: "application/pdf",
+    maxSize: 1024 * 1000 * 50,
     maxFiles: 1,
     onDrop,
   });
 
-  // Implememting cleanup functions and actions
-
+  // Implementing cleanup functions and actions
   useEffect(() => {
     // Revoke the data uris to avoid memory leaks
-    return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
+    return () => files.forEach((file) => URL.revokeObjectURL(file));
   }, [files]);
 
-  const removeFile = (name) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
+  const removeFile = async (file) => {
+    setFiles((files) => files.filter((f) => f !== file));
+    await removeFiles(file.name);
   };
 
-  // Empty the file list
-  const removeAll = () => {
+  // Empty the file list and delete the DB
+  const removeAll = async () => {
     setFiles([]);
     setRejected([]);
+    await removeAllFiles(); // Remove all files from the database
   };
 
   // Empty the rejected file list
-  const removeRejected = (name) => {
-    setRejected((files) => files.filter(({ file }) => file.name !== name));
+  const removeRejected = (file) => {
+    setRejected((files) => files.filter((f) => f !== file));
   };
 
   const action = async () => {
@@ -85,6 +135,10 @@ export default function DropZone({ className }) {
             </>
           )}
         </>
+        <div>
+          {text && <p className="!bg-slate-800 p-6 rounded-3xl">{text}</p>}
+          {thumbnail && <img src={thumbnail} alt="Thumbnail" />}
+        </div>
       </div>
     </form>
   );
