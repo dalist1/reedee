@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/DropZone.jsx", "app/page.jsx", "app/library/page.jsx", "app/_actions.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/DropZone.tsx", "app/page.tsx", "app/library/page.jsx", "app/_actions.tsx", "app/layout.tsx"],
   "exclude": ["node_modules"]
 }

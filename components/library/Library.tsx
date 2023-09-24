@@ -1,4 +1,4 @@
-import CallToAction from "@/components/library/CallToAction";
+import CallToAction from "@/components/library/UploadButton";
 import Card from "@/components/library/Card"
 
 export default function Library() {

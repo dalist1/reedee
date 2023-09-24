@@ -9,7 +9,6 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 const nextConfig = {
   swcMinify: true,
   experimental: { serverActions: true },
-  future: { webpack5: true },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.resolve.alias.canvas = false;
     config.resolve.alias.encoding = false;
