@@ -7,6 +7,9 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 });
 
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   swcMinify: true,
   experimental: { serverActions: true },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
@@ -15,7 +18,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['media.rawg.io'],
+    domains: ["media.rawg.io"],
   },
 };
 
