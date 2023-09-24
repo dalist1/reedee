@@ -13,8 +13,9 @@ import { pdfjs } from "react-pdf";
 import { saveToDatabase, removeFiles, removeAllFiles } from "./_actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
+import { PDFDocumentProxy } from "pdfjs-dist/types/src/display/api";
 
-async function extractTextFromPage(pdf, pageNumber: number) {
+async function extractTextFromPage(pdf: PDFDocumentProxy, pageNumber: number) {
   const page = await pdf.getPage(pageNumber);
   const textContent = await page.getTextContent();
   const strings = textContent.items.map((item) => item.str);
@@ -30,7 +31,7 @@ export default function DropZone({ className }: { className: string }) {
   // React query
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { mutate: uploadFiles, isLoading: deleteLoading } = useMutation({
+  const { mutate: uploadFiles } = useMutation({
     mutationFn: async ({ file, thumbnail, authorName, title }) =>
       await saveToDatabase(file, thumbnail, authorName, title),
     onSuccess: () => {
