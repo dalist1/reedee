@@ -1,16 +1,31 @@
 "use client";
 
+import { pdfjs } from "react-pdf";
+import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
+
 import { openDB, deleteDB, IDBPDatabase } from "idb";
 
 let db: IDBPDatabase | null = null;
 
 type CardObject = {
   name: string;
-  blob: Blob;
   thumbnail: string;
   author: string;
   title: string;
+  text: string;
 };
+
+async function extractTextFromPage(pdf: PDFDocumentProxy, pageNumber: number) {
+  const page = await pdf.getPage(pageNumber);
+  const textContent = await page.getTextContent();
+  const strings = textContent.items.map((item) => item.str);
+  return strings.join(" ");
+}
 
 async function getDatabase() {
   if (!db) {
@@ -27,18 +42,16 @@ export async function saveToDatabase(
   file: File,
   thumbnail: string,
   authorName: string,
-  title: string
+  title: string,
+  text: string
 ) {
   try {
-    const db = await getDatabase();
-    const blob = new Blob([file], { type: file.type });
-
     const cardObject: CardObject = {
       name: file.name,
-      blob,
       thumbnail: thumbnail,
       author: authorName,
       title: title,
+      text: text,
     };
 
     await db.put("pdfFiles", cardObject);
@@ -72,19 +85,42 @@ export async function getCardObjects(): Promise<CardObject[]> {
   return cardObjects;
 }
 
-export async function getBlob(fileName: string): Promise<Blob> {
-  try {
-    const db = await getDatabase();
-    const fileData = await db.get("pdfFiles", fileName);
+export async function processFile(file: File) {
+  const reader = new FileReader();
 
-    if (fileData && fileData.blob) {
-      return fileData.blob;
-    } else {
-      throw new Error("Blob not found in database");
-    }
-  } catch (error) {
-    throw new Error("Error retrieving blob from database");
-  }
+  return new Promise((resolve, reject) => {
+    reader.onloadend = async () => {
+      const blobURL = URL.createObjectURL(
+        new Blob([reader.result as ArrayBuffer], { type: file.type })
+      );
+
+      const pdf = await pdfjs.getDocument(blobURL).promise;
+
+      const metadata = await pdf.getMetadata();
+      const authorName = metadata.info.Author as string;
+      const title = metadata.info.Title as string;
+
+      const text = await extractTextFromPage(pdf, 1);
+
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale: 1 });
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      await page.render({ canvasContext: context, viewport }).promise;
+      const thumbnail = canvas.toDataURL();
+
+      resolve({ file, thumbnail, authorName, title, text });
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error reading file:", error);
+      reject(error);
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
 }
 
 export const resetDatabase = async () => {

@@ -1,39 +1,30 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { VscFiles } from "react-icons/vsc";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import { saveToDatabase, removeFiles, removeAllFiles } from "./_actions";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
+import { processFile } from "./_actions";
+import { pdfjs } from "react-pdf";
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
   import.meta.url
 ).toString();
 
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { VscFiles } from "react-icons/vsc";
-import { FaCloudUploadAlt } from "react-icons/fa";
-import { pdfjs } from "react-pdf";
-import { saveToDatabase, removeFiles, removeAllFiles } from "./_actions";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/components/ui/use-toast";
-import { PDFDocumentProxy } from "pdfjs-dist/types/src/display/api";
-
-async function extractTextFromPage(pdf: PDFDocumentProxy, pageNumber: number) {
-  const page = await pdf.getPage(pageNumber);
-  const textContent = await page.getTextContent();
-  const strings = textContent.items.map((item) => item.str);
-  return strings.join(" ");
-}
-
 export default function DropZone({ className }: { className: string }) {
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
-  const [text, setText] = useState("");
-  const [thumbnail, setThumbnail] = useState(null);
 
   // React query
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { mutate: uploadFiles } = useMutation({
-    mutationFn: async ({ file, thumbnail, authorName, title }) =>
-      await saveToDatabase(file, thumbnail, authorName, title),
+    mutationFn: async ({ file, thumbnail, authorName, title, text }) =>
+      await saveToDatabase(file, thumbnail, authorName, title, text),
     onSuccess: () => {
       queryClient.invalidateQueries(["userFiles"]);
     },
@@ -44,41 +35,14 @@ export default function DropZone({ className }: { className: string }) {
 
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-
-      reader.onloadend = async () => {
-        const blobURL = URL.createObjectURL(
-          new Blob([reader.result as ArrayBuffer], { type: file.type })
-        );
-
-        setFiles((previousFiles) => [...previousFiles, blobURL]);
-
-        const pdf = await pdfjs.getDocument(blobURL).promise;
-
-        const metadata = await pdf.getMetadata();
-        const authorName: string = metadata.info.Author;
-        const title: string = metadata.info.Title;
-
-        const text = await extractTextFromPage(pdf, 1);
-        setText(text);
-
-        const page = await pdf.getPage(1);
-        const viewport = page.getViewport({ scale: 1 });
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
-        await page.render({ canvasContext: context, viewport }).promise;
-        const thumbnail = canvas.toDataURL();
-
-        uploadFiles({ file, thumbnail, authorName, title });
-      };
-
-      reader.onerror = (error) => {
-        console.error("Error reading file:", error);
-      };
-
-      reader.readAsArrayBuffer(file);
+      processFile(file)
+        .then(({ file, thumbnail, authorName, title, text }) => {
+          setFiles((previousFiles) => [...previousFiles, file]);
+          uploadFiles({ file, thumbnail, authorName, title, text });
+        })
+        .catch((error) => {
+          console.error("Error processing file:", error);
+        });
     });
 
     if (rejectedFiles?.length) {
@@ -147,10 +111,6 @@ export default function DropZone({ className }: { className: string }) {
                 </>
               )}
             </>
-            <div>
-              {text && <p className="!bg-slate-800 p-6 rounded-3xl">{text}</p>}
-              {thumbnail && <img src={thumbnail} alt="Thumbnail" />}
-            </div>
           </div>
         </form>
       </div>
