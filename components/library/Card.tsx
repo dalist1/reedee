@@ -5,7 +5,7 @@ import Interactions from "./Interactions";
 import Image from "next/image";
 import { getCardObjects } from "@/app/_actions";
 import Loading from "@/components/Loading";
-import { Reading } from "./Reading";
+import { Reading } from "../reading/Reading";
 import { useState } from "react";
 
 type cardObject = {
@@ -21,7 +21,7 @@ export default function Card() {
     queryKey: ["userFiles"],
     queryFn: async () => {
       const data = await getCardObjects();
-      console.log(data)
+      console.log(data);
       return data;
     },
   });
@@ -38,10 +38,10 @@ export default function Card() {
         data.map((cardObject: cardObject, index: number) => (
           <div
             key={index}
-            className="col-span-6 md:col-span-3 bg-gray-800 space-y-8 p-6 rounded-3xl"
+            className="cursor-pointer col-span-6 md:col-span-3 bg-gray-800 space-y-8 p-6 rounded-3xl mx-auto"
             onClick={() => {
               setIsReadingVisible(true);
-              setSelectedCard(cardObject);
+              setSelectedCard(cardObject);  
             }}
           >
             <h1 className="font-extrabold text-2xl">{cardObject.title}</h1>
