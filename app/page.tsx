@@ -17,10 +17,6 @@ export default function HomePage() {
   });
 
   return (
-    <>
-      <Suspense fallback={<Loading />}>
-        {isLoading ? null : data.length === 0 ? <DropZone /> : <Library />}
-      </Suspense>
-    </>
+    <>{isLoading ? null : data.length === 0 ? <DropZone /> : <Library />}</>
   );
 }

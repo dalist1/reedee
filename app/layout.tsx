@@ -42,7 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "bg-[url('..//public/Looper.svg')] bg-black",
+          "bg-[url('..//public/Looper.svg')] text-white bg-black",
           poppins.className
         )}
         style={{ backgroundSize: "cover" }}
