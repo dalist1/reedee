@@ -15,16 +15,15 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-export default function DropZone({ className }: { className: string }) {
+export default function DropZone({ className: string }) {
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
 
-  // React query
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { mutate: uploadFiles } = useMutation({
-    mutationFn: async ({ file, thumbnail, authorName, title, text }) =>
-      await saveToDatabase(file, thumbnail, authorName, title, text),
+    mutationFn: async ({ file, thumbnail, authorName, title, pdf }) =>
+      await saveToDatabase(file, thumbnail, authorName, title, pdf),
     onSuccess: () => {
       queryClient.invalidateQueries(["userFiles"]);
     },
@@ -36,9 +35,9 @@ export default function DropZone({ className }: { className: string }) {
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
       processFile(file)
-        .then(({ file, thumbnail, authorName, title, text }) => {
+        .then(({ file, thumbnail, authorName, title, pdf }) => {
           setFiles((previousFiles) => [...previousFiles, file]);
-          uploadFiles({ file, thumbnail, authorName, title, text });
+          uploadFiles({ file, thumbnail, authorName, title, pdf });
         })
         .catch((error) => {
           console.error("Error processing file:", error);
@@ -76,11 +75,11 @@ export default function DropZone({ className }: { className: string }) {
     setRejected((files) => files.filter((f) => f !== file));
   };
 
-  const action = async () => {
-    const file = files[0];
-    if (!file) return;
-  };
-
+const action = async (event) => {
+  event.preventDefault(); // prevent form submission
+  const file = files[0];
+  if (!file) return;
+};
   return (
     <div className="flex h-full w-full justify-center items-center max-w-md mx-auto">
       <div className="bg-gray-400 w-11/12 h-2/5 cursor-pointer flex rounded-3xl space-y-12 font-bold flex-col items-center justify-center text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">

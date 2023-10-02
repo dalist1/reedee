@@ -1,12 +1,62 @@
+// Reading component with the page navigation
+"use client";
+
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import PageConent from "@/components/reading/PageContent";
+import PageContent from "@/components/reading/PageContent";
 import Summary from "@/components/reading/Summary";
 import TakeAways from "./Takeaways";
 import { Suspense } from "react";
 import Loading from "../Loading";
+import { extractTextFromPage } from "@/app/_actions";
+
+import { pdfjs } from "react-pdf";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
 
 export function Reading({ selectedCard, setIsReadingVisible }) {
+  console.log("Selected card object", selectedCard);
+  const { pdf: blobUrl } = selectedCard;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [numPages, setNumPages] = useState(null);
+  const [currentPageText, setCurrentPageText] = useState(null);
+
+  useEffect(() => {
+    if (blobUrl) {
+      const loadNumPages = async () => {
+        const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
+        setNumPages(pdfDoc.numPages);
+      };
+      loadNumPages();
+    }
+  }, [blobUrl]);
+
+  const goToNextPage = () => {
+    if (currentPage < numPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const loadPage = async () => {
+    const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
+    const text = await extractTextFromPage(pdfDoc, currentPage);
+    setCurrentPageText(text);
+  };
+
+  useEffect(() => {
+    loadPage();
+  }, [currentPage]);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -15,6 +65,7 @@ export function Reading({ selectedCard, setIsReadingVisible }) {
       transition={{ duration: 0.3 }}
     >
       <div className="z-50 absolute bg-slate-950 top-0 left-0 w-screen h-screen">
+        <div className="pointer-events-none fixed left-0 top-0 z-50 h-12 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_bottom,black,transparent)] dark:bg-black"></div>
         <Button
           className="absolute top-4 right-4"
           onClick={() => setIsReadingVisible(false)}
@@ -22,11 +73,17 @@ export function Reading({ selectedCard, setIsReadingVisible }) {
           Back
         </Button>
         <div className="bg-slate-950 z-10 flex flex-col justify-center items-center">
-          <Suspense fallback={<Loading />}>
-            <Summary />
-          </Suspense>
-          <PageConent pageText={selectedCard} />
+          <div className="w-full sm:flex-col items-start sm:max-lg:items-center max-w-6xl sm:max-lg:grid-cols-6 mx-auto h-full p-6 mt-14">
+            <div className="text-blue-500 col-span-6 md:col-span-3 bg-blue-500 bg-opacity-10 space-y-8 p-6 rounded-3xl">
+              <Suspense fallback={<Loading name="summary" />}>
+                <Summary />
+              </Suspense>
+            </div>
+          </div>
+          <PageContent pageText={currentPageText} />
           <TakeAways />
+          <Button onClick={goToPreviousPage}>Previous Page</Button>
+          <Button onClick={goToNextPage}>Next Page</Button>
         </div>
       </div>
     </motion.div>

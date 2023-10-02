@@ -1,3 +1,5 @@
+// Card.tsx React component
+
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +15,7 @@ type cardObject = {
   author: string;
   title: string;
   thumbnail: string;
-  text: string;
+  pdf: string;
 };
 
 export default function Card() {
@@ -41,7 +43,7 @@ export default function Card() {
             className="cursor-pointer col-span-6 md:col-span-3 bg-gray-800 space-y-8 p-6 rounded-3xl mx-auto"
             onClick={() => {
               setIsReadingVisible(true);
-              setSelectedCard(cardObject);  
+              setSelectedCard(cardObject);
             }}
           >
             <h1 className="font-extrabold text-2xl">{cardObject.title}</h1>

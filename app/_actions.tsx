@@ -1,7 +1,8 @@
+// actions.tsx file with helper functions
+
 "use client";
 
 import { pdfjs } from "react-pdf";
-import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -17,17 +18,20 @@ type CardObject = {
   thumbnail: string;
   author: string;
   title: string;
-  text: string;
+  pdf: string;
 };
 
-async function extractTextFromPage(pdf: PDFDocumentProxy, pageNumber: number) {
+export async function extractTextFromPage(
+  pdf: string,
+  pageNumber: number
+) {
   const page = await pdf.getPage(pageNumber);
   const textContent = await page.getTextContent();
   const strings = textContent.items.map((item) => item.str);
   return strings.join(" ");
 }
 
-async function getDatabase() {
+export async function getDatabase() {
   if (!db) {
     db = await openDB("ReedeeDB", 1, {
       upgrade(db) {
@@ -43,7 +47,7 @@ export async function saveToDatabase(
   thumbnail: string,
   authorName: string,
   title: string,
-  text: string
+  pdf: string
 ) {
   try {
     const cardObject: CardObject = {
@@ -51,8 +55,10 @@ export async function saveToDatabase(
       thumbnail: thumbnail,
       author: authorName,
       title: title,
-      text: text,
+      pdf: pdf,
     };
+
+    console.log("Saving PDF ArrayBuffer to database:", pdf);
 
     await db.put("pdfFiles", cardObject);
   } catch (error) {
@@ -100,8 +106,6 @@ export async function processFile(file: File) {
       const authorName = metadata.info.Author as string;
       const title = metadata.info.Title as string;
 
-      const text = await extractTextFromPage(pdf, 1);
-
       const page = await pdf.getPage(1);
       const viewport = page.getViewport({ scale: 1 });
       const canvas = document.createElement("canvas");
@@ -111,7 +115,16 @@ export async function processFile(file: File) {
       await page.render({ canvasContext: context, viewport }).promise;
       const thumbnail = canvas.toDataURL();
 
-      resolve({ file, thumbnail, authorName, title, text });
+      // Log the PDF Blob URL
+      console.log("PDF Blob URL:", blobURL);
+
+      resolve({
+        file,
+        thumbnail,
+        authorName,
+        title,
+        pdf: blobURL,
+      });
     };
 
     reader.onerror = (error) => {
@@ -122,12 +135,3 @@ export async function processFile(file: File) {
     reader.readAsArrayBuffer(file);
   });
 }
-
-export const resetDatabase = async () => {
-  try {
-    await deleteDB("ReedeeDB");
-    console.log("Database reset successful");
-  } catch (error) {
-    console.error("Error resetting database:", error);
-  }
-};
