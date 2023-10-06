@@ -5,8 +5,8 @@ import { useDropzone } from "react-dropzone";
 import { VscFiles } from "react-icons/vsc";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { removeFile, removeAllFiles } from "./_actions";
-import { processFile } from "./_actions";
-import { pdfjs } from "react-pdf";
+import * as pdfjs from 'pdfjs-dist';
+
 import useFileUpload from "@/hooks/useFileUpload";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -19,14 +19,7 @@ export default function DropZone({ className: string }) {
 
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
-      processFile(file)
-        .then(({ file, thumbnail, authorName, title, pdf }) => {
-          setFiles((previousFiles) => [...previousFiles, file]);
-          uploadFiles({ file, thumbnail, authorName, title, pdf });
-        })
-        .catch((error) => {
-          console.error("Error processing file:", error);
-        });
+      uploadFiles(file)
     });
 
     if (rejectedFiles?.length) {
@@ -60,15 +53,10 @@ export default function DropZone({ className: string }) {
     setRejected((files) => files.filter((f) => f !== file));
   };
 
-const action = async (event) => {
-  event.preventDefault(); // prevent form submission
-  const file = files[0];
-  if (!file) return;
-};
   return (
     <div className="flex h-full w-full justify-center items-center max-w-md mx-auto">
       <div className="bg-gray-400 w-11/12 h-2/5 cursor-pointer flex rounded-3xl space-y-12 font-bold flex-col items-center justify-center text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
-        <form action={action}>
+        <form>
           <div
             {...getRootProps({
               className:

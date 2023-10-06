@@ -11,7 +11,7 @@ import { Suspense } from "react";
 import Loading from "../Loading";
 import { extractTextFromPage } from "@/app/_actions";
 
-import { pdfjs } from 'react-pdf';
+import * as pdfjs from 'pdfjs-dist';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 

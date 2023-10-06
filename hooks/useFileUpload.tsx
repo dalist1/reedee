@@ -1,6 +1,7 @@
-import { useToast } from "@/components/ui/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveToDatabase } from "@/app/_actions";
+import { useToast } from "@/components/ui/use-toast";
+import { processFile } from "@/app/_actions"; // Import the processFile function
 
 type UploadFileParams = {
   file: File;
@@ -13,9 +14,12 @@ type UploadFileParams = {
 export default function useFileUpload() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
   const { mutate: uploadFiles } = useMutation({
-    mutationFn: async (params: UploadFileParams) =>
-    await saveToDatabase(params.file, params.thumbnail, params.authorName, params.title, params.pdf),    
+    mutationFn: async (file: File) => {
+      const processedData = await processFile(file);
+      await saveToDatabase(processedData.file, processedData.thumbnail, processedData.authorName, processedData.title, processedData.pdf);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(["userFiles"]);
     },
@@ -24,5 +28,5 @@ export default function useFileUpload() {
     },
   });
 
-    return uploadFiles;
+  return uploadFiles;
 }
