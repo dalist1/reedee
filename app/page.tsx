@@ -3,9 +3,8 @@
 import React, { Suspense } from "react";
 import DropZone from "./DropZone";
 import Library from "@/components/library/Library";
-import { getCardObjects } from "./_actions";
+import { getCardObjects } from "@/lib/dbOperations";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "@/components/Loading";
 
 export default function HomePage() {
   const { data, isLoading, isError } = useQuery({

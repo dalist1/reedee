@@ -9,7 +9,7 @@ import Summary from "@/components/reading/Summary";
 import TakeAways from "./Takeaways";
 import { Suspense } from "react";
 import Loading from "../Loading";
-import { extractTextFromPage } from "@/app/_actions";
+import { extractTextFromPage } from "@/lib/pdfOperations";
 
 import * as pdfjs from 'pdfjs-dist';
 

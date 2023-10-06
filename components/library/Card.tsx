@@ -5,7 +5,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Interactions from "./Interactions";
 import Image from "next/image";
-import { getCardObjects } from "@/app/_actions";
+import { getCardObjects } from "@/lib/dbOperations";
 import Loading from "@/components/Loading";
 import { Reading } from "../reading/Reading";
 import { useState } from "react";

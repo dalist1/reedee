@@ -1,7 +1,7 @@
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaShare, FaHeart, FaTrashCan } from "react-icons/fa6";
-import { removeAllFiles } from "@/app/_actions";
+import { removeAllFiles } from "@/lib/dbOperations";
 import { useToast } from "@/components/ui/use-toast";
 import InteractionsButton from "@/components/InteractionsButton";
 

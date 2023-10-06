@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { saveToDatabase } from "@/app/_actions";
+import { saveToDatabase } from "@/lib/dbOperations";
 import { useToast } from "@/components/ui/use-toast";
-import { processFile } from "@/app/_actions"; // Import the processFile function
+import { processFile } from "@/lib/pdfOperations";
 
 type UploadFileParams = {
   file: File;

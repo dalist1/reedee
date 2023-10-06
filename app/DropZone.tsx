@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { VscFiles } from "react-icons/vsc";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { removeFile, removeAllFiles } from "./_actions";
 import * as pdfjs from 'pdfjs-dist';
 
 import useFileUpload from "@/hooks/useFileUpload";
@@ -17,15 +16,20 @@ export default function DropZone({ className: string }) {
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
 
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
-    acceptedFiles.forEach((file) => {
+  const handleFiles = useCallback((files: File[]) => {
+    files.forEach((file) => {
       uploadFiles(file)
     });
-
+  }, [uploadFiles]);
+  
+  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
+    handleFiles(acceptedFiles);
+    
     if (rejectedFiles?.length) {
       setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
     }
-  }, []);
+  }, [handleFiles]);
+  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "application/pdf",
@@ -37,21 +41,6 @@ export default function DropZone({ className: string }) {
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file));
   }, [files]);
-
-  const removeFile = async (file: File) => {
-    setFiles((files) => files.filter((f) => f !== file));
-    await removeFiles(file.name);
-  };
-
-  const removeAll = async () => {
-    setFiles([]);
-    setRejected([]);
-    await removeAllFiles();
-  };
-
-  const removeRejected = (file: File) => {
-    setRejected((files) => files.filter((f) => f !== file));
-  };
 
   return (
     <div className="flex h-full w-full justify-center items-center max-w-md mx-auto">
