@@ -4,11 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { VscFiles } from "react-icons/vsc";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { saveToDatabase, removeFiles, removeAllFiles } from "./_actions";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/components/ui/use-toast";
+import { removeFile, removeAllFiles } from "./_actions";
 import { processFile } from "./_actions";
 import { pdfjs } from "react-pdf";
+import useFileUpload from "@/hooks/useFileUpload";
+
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.js",
@@ -16,21 +16,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 export default function DropZone({ className: string }) {
+  const uploadFiles = useFileUpload();
+
   const [files, setFiles] = useState([]);
   const [rejected, setRejected] = useState([]);
-
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const { mutate: uploadFiles } = useMutation({
-    mutationFn: async ({ file, thumbnail, authorName, title, pdf }) =>
-      await saveToDatabase(file, thumbnail, authorName, title, pdf),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["userFiles"]);
-    },
-    onError: () => {
-      toast({ description: "Error uploading files." });
-    },
-  });
 
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
     acceptedFiles.forEach((file) => {

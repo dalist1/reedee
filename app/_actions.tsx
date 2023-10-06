@@ -9,7 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url
 ).toString();
 
-import { openDB, deleteDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase } from "idb";
 
 let db: IDBPDatabase | null = null;
 
@@ -66,7 +66,7 @@ export async function saveToDatabase(
   }
 }
 
-export async function removeFiles(fileName: string) {
+export async function removeFile(fileName: string) {
   try {
     const db = await getDatabase();
     await db.delete("pdfFiles", fileName);
@@ -91,40 +91,16 @@ export async function getCardObjects(): Promise<CardObject[]> {
   return cardObjects;
 }
 
-export async function processFile(file: File) {
-  const reader = new FileReader();
-
+// Extract the logic for creating a Blob URL into a separate function
+const createBlobUrl = (file) => {
   return new Promise((resolve, reject) => {
-    reader.onloadend = async () => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
       const blobURL = URL.createObjectURL(
         new Blob([reader.result as ArrayBuffer], { type: file.type })
       );
-
-      const pdf = await pdfjs.getDocument(blobURL).promise;
-
-      const metadata = await pdf.getMetadata();
-      const authorName = metadata.info.Author as string;
-      const title = metadata.info.Title as string;
-
-      const page = await pdf.getPage(1);
-      const viewport = page.getViewport({ scale: 1 });
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      await page.render({ canvasContext: context, viewport }).promise;
-      const thumbnail = canvas.toDataURL();
-
-      // Log the PDF Blob URL
-      console.log("PDF Blob URL:", blobURL);
-
-      resolve({
-        file,
-        thumbnail,
-        authorName,
-        title,
-        pdf: blobURL,
-      });
+      resolve(blobURL);
     };
 
     reader.onerror = (error) => {
@@ -134,4 +110,41 @@ export async function processFile(file: File) {
 
     reader.readAsArrayBuffer(file);
   });
+};
+
+// Extract the logic for extracting metadata from a PDF into a separate function
+const getMetadata = async (blobURL) => {
+  const pdf = await pdfjs.getDocument(blobURL).promise;
+  const metadata = await pdf.getMetadata();
+  return { pdf, metadata };
+};
+
+// Extract the logic for rendering a thumbnail from a PDF into a separate function
+const renderThumbnail = async (pdf) => {
+  const page = await pdf.getPage(1);
+  const viewport = page.getViewport({ scale: 1 });
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
+  await page.render({ canvasContext: context, viewport }).promise;
+  return canvas.toDataURL();
+};
+
+// Then, your refactored processFile function becomes much simpler and easier to understand:
+export async function processFile(file: File) {
+  const blobURL = await createBlobUrl(file);
+  const { pdf, metadata } = await getMetadata(blobURL);
+  const thumbnail = await renderThumbnail(pdf);
+
+  // Log the PDF Blob URL
+  console.log("PDF Blob URL:", blobURL);
+
+  return {
+    file,
+    thumbnail,
+    authorName: metadata.info.Author as string,
+    title: metadata.info.Title as string,
+    pdf: blobURL,
+  };
 }
