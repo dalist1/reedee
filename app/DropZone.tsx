@@ -9,9 +9,8 @@ import { processFile } from "./_actions";
 import { pdfjs } from "react-pdf";
 import useFileUpload from "@/hooks/useFileUpload";
 
-
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
+  "/public/pdf.worker.min.js",
   import.meta.url
 ).toString();
 
