@@ -11,12 +11,10 @@ import { Suspense } from "react";
 import Loading from "../Loading";
 import { extractTextFromPage } from "@/app/_actions";
 
-import { pdfjs } from "react-pdf";
+import { pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
 
 export function Reading({ selectedCard, setIsReadingVisible }) {
   console.log("Selected card object", selectedCard);

@@ -2,12 +2,9 @@
 
 "use client";
 
-import { pdfjs } from "react-pdf";
+import { pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "/public/pdf.worker.min.js",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 import { openDB, IDBPDatabase } from "idb";
 

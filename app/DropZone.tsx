@@ -9,10 +9,7 @@ import { processFile } from "./_actions";
 import { pdfjs } from "react-pdf";
 import useFileUpload from "@/hooks/useFileUpload";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "/public/pdf.worker.min.js",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function DropZone({ className: string }) {
   const uploadFiles = useFileUpload();
