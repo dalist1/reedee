@@ -14,7 +14,6 @@ export async function extractTextFromPage(
 }
 
 
-// Extract the logic for creating a Blob URL into a separate function
 const createBlobUrl = (file: File) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -35,14 +34,12 @@ const createBlobUrl = (file: File) => {
     });
   };
   
-  // Extract the logic for extracting metadata from a PDF into a separate function
   const getMetadata = async (blobURL: string) => {
     const pdf = await pdfjs.getDocument(blobURL).promise;
     const metadata = await pdf.getMetadata();
     return { pdf, metadata };
   };
   
-  // Extract the logic for rendering a thumbnail from a PDF into a separate function
   const renderThumbnail = async (pdf) => {
     const page = await pdf.getPage(1);
     const viewport = page.getViewport({ scale: 1 });
@@ -54,7 +51,6 @@ const createBlobUrl = (file: File) => {
     return canvas.toDataURL();
   };
   
-  // Then, your refactored processFile function becomes much simpler and easier to understand:
   export async function processFile(file: File) {
     const blobURL = await createBlobUrl(file);
     const { pdf, metadata } = await getMetadata(blobURL);
