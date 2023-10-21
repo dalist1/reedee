@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/DropZone.tsx", "app/page.tsx", "app/dalist/page.tsx", "app/layout.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/DropZone.tsx", "app/page.tsx", "app/dalist/page.tsx", "app/layout.tsx", "components/ui/dialog.tsx"],
   "exclude": ["node_modules"]
 }

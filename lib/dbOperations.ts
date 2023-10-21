@@ -8,7 +8,9 @@ type CardObject = {
   author: string;
   title: string;
   pdf: string;
+  liked?: boolean;
 };
+
 
 export async function getDatabase() {
   if (!db) {
@@ -26,7 +28,8 @@ export async function saveToDatabase(
   thumbnail: string,
   authorName: string,
   title: string,
-  pdf: string
+  pdf: string,
+  liked?: boolean
 ) {
   try {
     const cardObject: CardObject = {
@@ -35,6 +38,7 @@ export async function saveToDatabase(
       author: authorName,
       title: title,
       pdf: pdf,
+      liked: liked,
     };
 
     console.log("Saving PDF ArrayBuffer to database:", pdf);
@@ -68,4 +72,21 @@ export async function getCardObjects(): Promise<CardObject[]> {
   const db = await getDatabase();
   const cardObjects = await db.getAll("pdfFiles");
   return cardObjects;
+}
+
+export async function updateLikeStatus(fileName: string, liked: boolean) {
+  try {
+    const db = await getDatabase();
+    const tx = db.transaction("pdfFiles", "readwrite");
+    const store = tx.objectStore("pdfFiles");
+    const cardObject = await store.get(fileName);
+    if (cardObject) {
+      cardObject.liked = liked;
+      await store.put(cardObject);
+      console.log(`Updated like status for the book ${fileName} in database to ${liked}`);
+    }
+  } catch (error) {
+    console.error("Error updating like status in database", error);
+    throw new Error("Error updating like status in database");
+  }
 }

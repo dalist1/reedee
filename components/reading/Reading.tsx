@@ -17,8 +17,7 @@ import * as pdfjs from 'pdfjs-dist';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-
-export function Reading({ selectedCard, setIsReadingVisible }) {
+export function Reading({ selectedCard, setIsReadingVisible, fileName }) {
   console.log("Selected card object", selectedCard);
   const { pdf: blobUrl } = selectedCard;
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,7 +63,7 @@ export function Reading({ selectedCard, setIsReadingVisible }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="z-50 absolute bg-black/60 top-0 left-0 w-full h-full">
+      <div className="z-50 absolute bg-black/60 top-0 left-0 w-screen h-screen">
         <Button
           className="absolute top-4 right-4"
           onClick={() => setIsReadingVisible(false)}
@@ -81,7 +80,7 @@ export function Reading({ selectedCard, setIsReadingVisible }) {
           </div>
           <PageContent pageText={currentPageText} />
           <TakeAways />
-          <Controls currentPageText={currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage}/>
+          <Controls fileName={fileName} currentPageText={currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage}/>
         </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
       </div>

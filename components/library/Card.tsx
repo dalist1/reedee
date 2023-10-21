@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import Interactions from "./Interactions";
 import Image from "next/image";
 import { getCardObjects } from "@/lib/dbOperations";
-import Loading from "@/components/Loading";
 import { Reading } from "../reading/Reading";
 import { useState } from "react";
 
@@ -18,21 +17,22 @@ type cardObject = {
   pdf: string;
 };
 
-export default function Card() {
-  const { data, isLoading, isError } = useQuery({
+export default function Card({ category }) {
+  
+  const { data } = useQuery({
     queryKey: ["userFiles"],
     queryFn: async () => {
       const data = await getCardObjects();
-      console.log(data);
+      if (category === "Liked") {
+        return data.filter(cardObject => cardObject.liked);
+      }
       return data;
     },
   });
 
+
   const [isReadingVisible, setIsReadingVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-
-  if (isLoading) return <Loading />;
-  if (isError) return `An error has occurred:`;
 
   return (
     <main className="gap-y-12 grid lg:grid-cols-9 gap-x-8">
@@ -40,27 +40,30 @@ export default function Card() {
         data.map((cardObject: cardObject, index: number) => (
           <div
             key={index}
-            className="cursor-pointer col-span-6 md:col-span-3 bg-gray-800 space-y-8 p-6 rounded-3xl mx-auto"
-            onClick={() => {
-              setIsReadingVisible(true);
-              setSelectedCard(cardObject);
-            }}
+            className="col-span-6 md:col-span-3 bg-gray-800 space-y-8 p-6 rounded-3xl mx-auto"
           >
             <h1 className="font-extrabold text-2xl">{cardObject.title}</h1>
             <p>Author: {cardObject.author}</p>
-            <div className="aspect-video relative">
+            <div className="cursor-pointer aspect-video relative"
+              onClick={() => {
+                setIsReadingVisible(true);
+                setSelectedCard(cardObject);
+              }}>
               <Image
                 fill
                 className="object-cover rounded"
                 src={cardObject.thumbnail}
                 alt={cardObject.title}
+
               />
             </div>
-            <Interactions />
+            <Interactions fileName={cardObject.name} />
           </div>
         ))}
+
       {isReadingVisible && (
         <Reading
+          fileName={selectedCard.name}
           selectedCard={selectedCard}
           setIsReadingVisible={setIsReadingVisible}
         />
