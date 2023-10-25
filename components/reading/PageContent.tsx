@@ -1,4 +1,3 @@
-// PageContent file containing the text from the PDF
 
 import { AiOutlineExpandAlt } from "react-icons/ai";
 

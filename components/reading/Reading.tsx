@@ -1,4 +1,3 @@
-// Reading component with the page navigation
 "use client";
 
 import { useEffect, useState } from "react";

@@ -1,6 +1,5 @@
 import DropZone from "@/app/DropZone";
 
-// Shadcn Dialog
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 
 export default function UploadButton() {

@@ -7,24 +7,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function extractTextFromPage(
-  pdf: PDFDocumentProxy,
-  pageNumber: number
-) {
-  const page = await pdf.getPage(pageNumber);
-  const textContent = await page.getTextContent();
-  const strings = textContent.items.map((item) => item.str);
-  return strings.join(" ");
-}
-
 export async function MockAPI() {
   const data = await fetch("/api/mock").then((response) => response.json().then((data)=> data.msg))
   return data
 }
-
-// 
-const loadPage = async () => {
-  const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
-  const text = await extractTextFromPage(pdfDoc, currentPage);
-  setCurrentPageText(text);
-};

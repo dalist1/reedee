@@ -1,6 +1,5 @@
 "use client"
 
-// Shadcn Dialog
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 
 import { FaPlay, FaPause } from 'react-icons/fa6'
