@@ -1,26 +1,13 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaShare, FaTrashCan } from "react-icons/fa6";
-import { removeAllFiles } from "@/lib/dbOperations";
-import { useToast } from "@/components/ui/use-toast";
 import InteractionsButton from "@/components/InteractionsButton";
 import AnimatedLike from "../AnimatedLike";
+import useDeletefile from "@/hooks/useDeleteFile";
 
-export default function Interactions({fileName}) {
+export default function Interactions({ fileName }) {
 
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const { mutate: deleteFiles } = useMutation({
-    mutationFn: async () => await removeAllFiles(),
-    onSuccess: () => {
-      toast({ description: "Files removed successfully!" });
-      queryClient.invalidateQueries(["userFiles"]);
-    },
-    onError: () => {
-      toast({ description: "There was an error, please try again." });
-    },
-  });
+  const deleteFile = useDeletefile()
 
   return (
     <div className="flex justify-around items-center w-80 h-16 rounded-3xl">
@@ -29,7 +16,7 @@ export default function Interactions({fileName}) {
       <InteractionsButton
         Icon={FaTrashCan}
         tooltipText="Delete"
-        onClick={() => deleteFiles()}
+        onClick={() => deleteFile(fileName)}
       />
     </div>
   );

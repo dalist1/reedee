@@ -26,7 +26,7 @@ export default function Controls({ goToNextPage, goToPreviousPage, currentPageTe
     };
 
     return (
-        <div className="border z-50 flex h-[4.5rem] justify-between items-center w-96 fixed font-medium text-sm bottom-4 p-4 bg-slate-950/80 backdrop-blur-sm rounded-full">
+        <div className="z-50 flex h-[4.5rem] justify-between items-center w-96 fixed font-medium text-sm bottom-4 p-4 bg-slate-950/80 backdrop-blur-sm rounded-full">
             <span className="flex justify-cente items-center p-4 cursor-pointer">
                 <AnimatedLike fileName={fileName} size={24} color="#6b7280" />
             </span>

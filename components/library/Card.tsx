@@ -1,5 +1,3 @@
-// Card.tsx React component
-
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
@@ -18,21 +16,21 @@ type cardObject = {
 };
 
 export default function Card({ category }) {
-  
+  const [isReadingVisible, setIsReadingVisible] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+
   const { data } = useQuery({
-    queryKey: ["userFiles"],
-    queryFn: async () => {
+    queryKey: ["userFiles", category],
+    queryFn: async ({ queryKey }) => {
       const data = await getCardObjects();
+      const category = queryKey[1];
       if (category === "Liked") {
-        return data.filter(cardObject => cardObject.liked);
+        return data.filter((cardObject) => cardObject.liked);
       }
       return data;
     },
+    notifyOnChangeProps: ['data']
   });
-
-
-  const [isReadingVisible, setIsReadingVisible] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
 
   return (
     <main className="gap-y-12 grid lg:grid-cols-9 gap-x-8">
@@ -45,7 +43,7 @@ export default function Card({ category }) {
             <h1 className="font-extrabold text-2xl">{cardObject.title}</h1>
             <p>Author: {cardObject.author}</p>
             <div className="cursor-pointer aspect-video relative"
-              onClick={() => {
+              onClick={() => {  
                 setIsReadingVisible(true);
                 setSelectedCard(cardObject);
               }}>

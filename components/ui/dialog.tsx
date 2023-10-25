@@ -28,8 +28,6 @@ const DialogOverlay = React.forwardRef<
   />
 ))
 
-// ...
-
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -45,7 +43,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-2 top-12 rounded-sm transition-opacity opacity-100 focus:outline-none p-1 hover:bg-slate-600/90 hover:rounded-full disabled:pointer-events-none data-[state=open]:text-slate-500 dark:data-[state=open]:text-slate-400">
+      <DialogPrimitive.Close className="absolute right-1 rounded-sm transition-opacity opacity-100 focus:outline-none p-1 hover:bg-slate-600/90 hover:rounded-full disabled:pointer-events-none data-[state=open]:text-slate-500 dark:data-[state=open]:text-slate-400">
         <FaXmark className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

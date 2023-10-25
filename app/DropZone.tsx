@@ -10,7 +10,7 @@ import useFileUpload from "@/hooks/useFileUpload";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-export default function DropZone({ className: string }) {
+export default function DropZone() {
   const uploadFiles = useFileUpload();
 
   const [files, setFiles] = useState([]);
@@ -44,8 +44,7 @@ export default function DropZone({ className: string }) {
 
   return (
     <div className="flex h-full w-full justify-center items-center max-w-md mx-auto">
-      <div className="bg-gray-400 w-11/12 h-2/5 cursor-pointer flex rounded-3xl space-y-12 font-bold flex-col items-center justify-center text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
-        <form>
+      <div className="bg-gray-400 my-5 w-11/12 h-72 cursor-pointer flex rounded-3xl space-y-12 font-bold flex-col items-center justify-center text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
           <div
             {...getRootProps({
               className:
@@ -73,7 +72,6 @@ export default function DropZone({ className: string }) {
               )}
             </>
           </div>
-        </form>
       </div>
     </div>
   );

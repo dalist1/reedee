@@ -55,10 +55,7 @@ const createBlobUrl = (file: File) => {
     const blobURL = await createBlobUrl(file);
     const { pdf, metadata } = await getMetadata(blobURL);
     const thumbnail = await renderThumbnail(pdf);
-  
-    // Log the PDF Blob URL
-    console.log("PDF Blob URL:", blobURL);
-  
+    
     return {
       file,
       thumbnail,

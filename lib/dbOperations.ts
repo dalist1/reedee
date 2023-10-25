@@ -41,8 +41,6 @@ export async function saveToDatabase(
       liked: liked,
     };
 
-    console.log("Saving PDF ArrayBuffer to database:", pdf);
-
     await db.put("pdfFiles", cardObject);
   } catch (error) {
     throw new Error("Error saving file to database");
@@ -83,10 +81,8 @@ export async function updateLikeStatus(fileName: string, liked: boolean) {
     if (cardObject) {
       cardObject.liked = liked;
       await store.put(cardObject);
-      console.log(`Updated like status for the book ${fileName} in database to ${liked}`);
     }
   } catch (error) {
-    console.error("Error updating like status in database", error);
     throw new Error("Error updating like status in database");
   }
 }
