@@ -11,7 +11,6 @@
  * limitations under the License.
  */
 
-// If the loader is already loaded, just stop.
 if (!self.define) {
   let registry = {};
 

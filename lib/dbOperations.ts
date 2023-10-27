@@ -1,18 +1,18 @@
-"use client";
-
-import { openDB, deleteDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase } from "idb";
 
 let db: IDBPDatabase | null = null;
 
 type CardObject = {
   name: string;
-  blob: Blob;
   thumbnail: string;
   author: string;
   title: string;
+  pdf: string;
+  liked?: boolean;
 };
 
-async function getDatabase() {
+
+export async function getDatabase() {
   if (!db) {
     db = await openDB("ReedeeDB", 1, {
       upgrade(db) {
@@ -27,18 +27,18 @@ export async function saveToDatabase(
   file: File,
   thumbnail: string,
   authorName: string,
-  title: string
+  title: string,
+  pdf: string,
+  liked?: boolean
 ) {
   try {
-    const db = await getDatabase();
-    const blob = new Blob([file], { type: file.type });
-
     const cardObject: CardObject = {
       name: file.name,
-      blob,
       thumbnail: thumbnail,
       author: authorName,
       title: title,
+      pdf: pdf,
+      liked: liked,
     };
 
     await db.put("pdfFiles", cardObject);
@@ -47,7 +47,7 @@ export async function saveToDatabase(
   }
 }
 
-export async function removeFiles(fileName: string) {
+export async function removeFile(fileName: string) {
   try {
     const db = await getDatabase();
     await db.delete("pdfFiles", fileName);
@@ -72,26 +72,17 @@ export async function getCardObjects(): Promise<CardObject[]> {
   return cardObjects;
 }
 
-export async function getBlob(fileName: string): Promise<Blob> {
+export async function updateLikeStatus(fileName: string, liked: boolean) {
   try {
     const db = await getDatabase();
-    const fileData = await db.get("pdfFiles", fileName);
-
-    if (fileData && fileData.blob) {
-      return fileData.blob;
-    } else {
-      throw new Error("Blob not found in database");
+    const tx = db.transaction("pdfFiles", "readwrite");
+    const store = tx.objectStore("pdfFiles");
+    const cardObject = await store.get(fileName);
+    if (cardObject) {
+      cardObject.liked = liked;
+      await store.put(cardObject);
     }
   } catch (error) {
-    throw new Error("Error retrieving blob from database");
+    throw new Error("Error updating like status in database");
   }
 }
-
-export const resetDatabase = async () => {
-  try {
-    await deleteDB("ReedeeDB");
-    console.log("Database reset successful");
-  } catch (error) {
-    console.error("Error resetting database:", error);
-  }
-};
