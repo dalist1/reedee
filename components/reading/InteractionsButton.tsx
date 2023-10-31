@@ -11,7 +11,7 @@ export default function Button({ Icon, tooltipText, onClick }) {
       <Tooltip>
         <TooltipTrigger>
           <div
-            className="bg-slate-950 p-4 rounded-full hover:bg-slate-900"
+            className="bottom-4 my-4 bg-slate-950 p-4 rounded-full hover:bg-opacity-90"
             onClick={onClick}>
             <span className="text-white cursor-pointer bg-slate-950 hover:bg-slate-900 rounded-full">
               <Icon />

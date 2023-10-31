@@ -7,12 +7,14 @@ export default function Library() {
   const [category, setCategory] = useState("All");
 
   return (
-    <div className="flex flex-col items-center sm:max-lg:items-center gap-y-12 max-w-6xl sm:max-lg:grid-cols-6 mx-auto h-full">
-      <div className="flex justify-between items-end gap-x-10 w-11/12">
-        <Categories category={category} setCategory={setCategory} />
-        <CallToAction />
+    <section className="py-10 overflow-y-scroll h-full w-full bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)]">
+      <div className="flex flex-col justify-center items-center gap-y-10 lg:max-w-6xl sm:max-w-md mx-auto">
+        <div className="flex items-center justify-between gap-x-10">
+          <Categories category={category} setCategory={setCategory} />
+          <CallToAction />
+        </div>
+        <Card category={category} />
       </div>
-      <Card category={category} />
-    </div>
+    </section>
   );
 }

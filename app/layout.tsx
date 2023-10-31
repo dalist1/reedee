@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import TanStackProvider from "./providers";
-import { cn } from "@/lib/utils";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
@@ -18,7 +17,6 @@ export const metadata: Metadata = {
   },
   description: APP_DESCRIPTION,
   manifest: "/manifest.json",
-  themeColor: "#000000",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -41,10 +39,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn(
-          "bg-[url('..//public/Looper.svg')] text-white bg-black",
+        className={
           poppins.className
-        )}
+        }
         style={{ backgroundSize: "cover" }}
       >
         <TanStackProvider>{children}</TanStackProvider>

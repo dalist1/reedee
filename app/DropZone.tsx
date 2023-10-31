@@ -8,6 +8,7 @@ import * as pdfjs from 'pdfjs-dist';
 
 import useFileUpload from "@/hooks/useFileUpload";
 
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function DropZone() {
@@ -21,15 +22,15 @@ export default function DropZone() {
       uploadFiles(file)
     });
   }, [uploadFiles]);
-  
+
   const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
     handleFiles(acceptedFiles);
-    
+
     if (rejectedFiles?.length) {
       setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
     }
   }, [handleFiles]);
-  
+
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "application/pdf",
@@ -43,35 +44,33 @@ export default function DropZone() {
   }, [files]);
 
   return (
-    <div className="flex h-full w-full justify-center items-center max-w-md mx-auto">
-      <div className="bg-gray-400 my-5 w-11/12 h-72 cursor-pointer flex rounded-3xl space-y-12 font-bold flex-col items-center justify-center text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
-          <div
-            {...getRootProps({
-              className:
-                "flex flex-col gap-y-10 justify-center items-center w-full h-full",
-            })}
-          >
-            <input {...getInputProps({ name: "file" })} />
+    <div className="bg-gray-400 w-80 h-72 cursor-pointer rounded-3xl space-y-12 font-bold text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
+      <div
+        {...getRootProps({
+          className:
+            "flex flex-col gap-y-10 justify-center items-center w-full h-full",
+        })}
+      >
+        <input {...getInputProps({ name: "file" })} />
+        <>
+          {isDragActive ? (
+            <VscFiles size={90} />
+          ) : (
             <>
-              {isDragActive ? (
-                <VscFiles size={90} />
-              ) : (
-                <>
-                  <FaCloudUploadAlt size={90} />
-                  <div className="flex gap-x-2">
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-700 to-pink-600">
-                      Drag & drop
-                    </span>
-                    <span>or</span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-600">
-                      click
-                    </span>
-                    <span>to upload.</span>
-                  </div>
-                </>
-              )}
+              <FaCloudUploadAlt size={90} />
+              <div className="flex gap-x-2">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-700 to-pink-600">
+                  Drag & drop
+                </span>
+                <span>or</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-600">
+                  click
+                </span>
+                <span>to upload.</span>
+              </div>
             </>
-          </div>
+          )}
+        </>
       </div>
     </div>
   );

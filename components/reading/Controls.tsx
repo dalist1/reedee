@@ -8,7 +8,7 @@ import { FaGear } from 'react-icons/fa6'
 import { useState } from 'react';
 import { usePlayAudio } from '@/hooks/usePlayAudio';
 import SettingsModal from "@/components/settings/SettingsModal";
-import AnimatedLike from "@/components/AnimatedLike"
+import AnimatedLike from "@/components/reading/AnimatedLike"
 
 
 export default function Controls({ goToNextPage, goToPreviousPage, currentPageText, fileName }) {

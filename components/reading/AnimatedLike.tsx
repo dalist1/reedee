@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { updateLikeStatus, getCardObjects } from "@/lib/dbOperations";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "../ui/use-toast";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 
 type AnimatedLikeProps = {

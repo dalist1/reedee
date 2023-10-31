@@ -9,7 +9,7 @@ import TakeAways from "./Takeaways";
 import { Suspense } from "react";
 import Loading from "../Loading";
 import { extractTextFromPage } from "@/lib/pdfOperations";
-import Controls from "@/components/Controls"
+import Controls from "@/components/reading/Controls"
 
 import * as pdfjs from 'pdfjs-dist';
 

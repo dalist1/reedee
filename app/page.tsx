@@ -5,6 +5,7 @@ import DropZone from "./DropZone";
 import Library from "@/components/library/Library";
 import { getCardObjects } from "@/lib/dbOperations";
 import { useQuery } from "@tanstack/react-query";
+import StartPage from "@/components/StartPage";
 
 export default function HomePage() {
   const { data, isLoading } = useQuery({
@@ -16,6 +17,6 @@ export default function HomePage() {
   });
 
   return (
-    <>{isLoading ? null : data.length === 0 ? <DropZone /> : <Library />}</>
+    <>{isLoading ? null : data.length === 0 ? <StartPage /> : <Library />}</>
   );
 }
