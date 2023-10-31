@@ -33,7 +33,7 @@ export default function Card({ category }) {
   });
 
   return (
-    <main className="w-11/12 gap-7 grid lg:grid-cols-12">
+    <main className="text-white w-11/12 gap-7 grid lg:grid-cols-12">
       {data &&
         data.map((cardObject: cardObject, index: number) => (
           <div
@@ -42,7 +42,7 @@ export default function Card({ category }) {
           >
             <h1 className="font-extrabold text-xl">{cardObject.title}</h1>
             <p>Author: {cardObject.author}</p>
-            <div className="flex justify-center items-center w-11/12 mx-auto py-6 rounded-3xl bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
+            <div className="flex justify-center items-center w-11/12 mx-auto py-6 rounded-3xl cursor-pointer bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"
               onClick={() => {
                 setIsReadingVisible(true);
                 setSelectedCard(cardObject);

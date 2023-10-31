@@ -1,4 +1,4 @@
-import DropZone from "@/app/DropZone";
+import DropZone from "@/components/DropZone";
 
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 
