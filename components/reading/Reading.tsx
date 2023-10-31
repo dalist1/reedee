@@ -61,14 +61,14 @@ export function Reading({ selectedCard, setIsReadingVisible, fileName }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="z-50 absolute bg-black/60 top-0 left-0 w-screen h-screen">
+      <div className="z-50 absolute overflow-y-scroll bg-slate-950 top-0 left-0 w-screen h-screen">
         <Button
           className="absolute top-4 right-4"
           onClick={() => setIsReadingVisible(false)}
         >
           Back
         </Button>
-        <div className="bg-slate-950 z-10 flex flex-col justify-center items-center pb-20">
+        <div className="z-10 flex flex-col justify-center items-center pb-20">
           <div className="w-full sm:flex-col items-start sm:max-lg:items-center max-w-6xl sm:max-lg:grid-cols-6 mx-auto h-full p-6 mt-14">
             <div className="text-blue-500 col-span-6 md:col-span-3 bg-blue-500 bg-opacity-10 space-y-8 p-6 rounded-3xl">
               <Suspense fallback={<Loading name="summary" />}>
