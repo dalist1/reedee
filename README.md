@@ -5,7 +5,6 @@
     Enable your reading superpower.
 </p>
 
-
 ## What is Reedee?
 
 > **Reedee is under active development.** 
@@ -21,6 +20,7 @@ Reedee is a modern application built using Next.js and React Query. The tech sta
 - 🚀 [Next.js](https://nextjs.org/)
 - 🌴 [React Query](https://react-query.tanstack.com/)
 - 🎨 [Tailwind CSS](https://tailwindcss.com/)
+- 🖌️ [Shadcn/ui](https://ui.shadcn.com/)
 - 🎬 [Framer Motion](https://www.framer.com/api/motion/)
 
 
@@ -30,6 +30,7 @@ Reedee is a modern application built using Next.js and React Query. The tech sta
 - Audio playback for reading aloud functionality.
 - Customizable settings for appearance and typography.
 - Progressive Web App (PWA) support.
+- AI page summarization and takeaways.
 
 ## To-Do ✅
 
@@ -37,7 +38,7 @@ Reedee is a modern application built using Next.js and React Query. The tech sta
 - [x] Add audio playback functionality
 - [ ] Chrome cast for PDF file sharing
 - [ ] Add offline support
-- [ ] Support for Google Assistant summarizing commands
+- [ ] Support for Google Assistant voice summarization commands
 
 
 ## Contributing 🤝
