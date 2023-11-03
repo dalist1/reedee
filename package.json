@@ -34,10 +34,11 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.2.2",
-    "vercel": "^32.5.0"
+    "typescript": "5.2.2"
   },
   "devDependencies": {
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
     "webpack": "^5.89.0"
   }
 }

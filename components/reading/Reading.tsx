@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import PageContent from "@/components/reading/PageContent";
@@ -8,35 +6,23 @@ import Summary from "@/components/reading/Summary";
 import TakeAways from "./Takeaways";
 import { Suspense } from "react";
 import Loading from "../Loading";
-import { extractTextFromPage } from "@/lib/pdfOperations";
 import Controls from "@/components/reading/Controls"
+import usePdfData from "@/hooks/usePdfData";
 
 import * as pdfjs from 'pdfjs-dist';
-
-
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-export function Reading({ selectedCard, setIsReadingVisible, fileName }) {
-  const { pdf: blobUrl } = selectedCard;
+export function Reading({ setIsReadingVisible, fileName }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [numPages, setNumPages] = useState(null);
-  const [currentPageText, setCurrentPageText] = useState(null);
-
-  useEffect(() => {
-    if (blobUrl) {
-      const loadNumPages = async () => {
-        const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
-        setNumPages(pdfDoc.numPages);
-      };
-      loadNumPages();
-    }
-  }, [blobUrl]);
+  const { data: pdfData, isLoading, isError, error } = usePdfData(fileName);
 
   const goToNextPage = () => {
-    if (currentPage < numPages) {
+    if (currentPage < pdfData.numPages) {
       setCurrentPage(currentPage + 1);
     }
   };
+
+  console.log(pdfData)
 
   const goToPreviousPage = () => {
     if (currentPage > 1) {
@@ -44,15 +30,13 @@ export function Reading({ selectedCard, setIsReadingVisible, fileName }) {
     }
   };
 
-  const loadPage = async () => {
-    const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
-    const text = await extractTextFromPage(pdfDoc, currentPage);
-    setCurrentPageText(text);
-  };
+  if (isLoading) {
+    return <></>
+  }
 
-  useEffect(() => {
-    loadPage();
-  }, [currentPage]);
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <motion.div
@@ -76,10 +60,9 @@ export function Reading({ selectedCard, setIsReadingVisible, fileName }) {
               </Suspense>
             </div>
           </div>
-          <PageContent pageText={currentPageText} />
+          <PageContent pageText={pdfData.currentPageText} />
           <TakeAways />
-          <Controls fileName={fileName} currentPageText={currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage}/>
-        </div>
+          <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage} />        </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
       </div>
     </motion.div>

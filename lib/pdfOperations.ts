@@ -4,7 +4,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 
 export async function extractTextFromPage(
-  pdf: string,
+  pdf: pdfjs.PDFDocumentProxy,
   pageNumber: number
 ) {
   const page = await pdf.getPage(pageNumber);
@@ -12,7 +12,6 @@ export async function extractTextFromPage(
   const strings = textContent.items.map((item) => item.str);
   return strings.join(" ");
 }
-
 
 const createBlobUrl = (file: File) => {
     return new Promise((resolve, reject) => {
@@ -64,4 +63,5 @@ const createBlobUrl = (file: File) => {
       pdf: blobURL,
     };
   }
+
   

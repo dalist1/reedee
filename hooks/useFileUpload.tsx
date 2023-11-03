@@ -3,14 +3,6 @@ import { saveToDatabase } from "@/lib/dbOperations";
 import { useToast } from "@/components/ui/use-toast";
 import { processFile } from "@/lib/pdfOperations";
 
-type UploadFileParams = {
-  file: File;
-  thumbnail: string;
-  authorName: string;
-  title: string;
-  pdf: string;
-};
-
 export default function useFileUpload() {
   const { toast } = useToast();
   const queryClient = useQueryClient();

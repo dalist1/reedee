@@ -2,8 +2,7 @@
 
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
+  cacheOnFrontEndNav: true
 });
 
 const nextConfig = {
@@ -14,7 +13,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   swcMinify: true,
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  webpack: (config) => {
     config.resolve.alias.canvas = false;
     config.resolve.alias.encoding = false;    
     return config;

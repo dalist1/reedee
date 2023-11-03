@@ -11,7 +11,6 @@ type CardObject = {
   liked?: boolean;
 };
 
-
 export async function getDatabase() {
   if (!db) {
     db = await openDB("ReedeeDB", 1, {
@@ -38,7 +37,7 @@ export async function saveToDatabase(
       author: authorName,
       title: title,
       pdf: pdf,
-      liked: liked,
+      liked: liked
     };
 
     await db.put("pdfFiles", cardObject);
@@ -85,4 +84,13 @@ export async function updateLikeStatus(fileName: string, liked: boolean) {
   } catch (error) {
     throw new Error("Error updating like status in database");
   }
+}
+
+export async function getBlobUrl(fileName: string): Promise<string> {
+  const db = await getDatabase();
+  const cardObject = await db.get("pdfFiles", fileName);
+  if (cardObject && cardObject.pdf) {
+    return cardObject.pdf;
+  }
+  throw new Error(`No file found for the name ${fileName}`);
 }
