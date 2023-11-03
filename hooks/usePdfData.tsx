@@ -12,12 +12,10 @@ type PdfData = {
 async function fetchPdfData(fileName: string) {
   try {
     const blobUrl = await getBlobUrl(fileName);
-    console.log("Fetched Blob URL: ", blobUrl);
     const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
 
     const numPages = pdfDoc.numPages;
     const currentPageText = await extractTextFromPage(pdfDoc, 1);
-    console.log('CurrentPageText is ', currentPageText)
 
     return { blobUrl, numPages, currentPageText };
   } catch (error) {

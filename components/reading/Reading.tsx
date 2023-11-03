@@ -22,8 +22,6 @@ export function Reading({ setIsReadingVisible, fileName }) {
     }
   };
 
-  console.log(pdfData)
-
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
