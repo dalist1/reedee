@@ -7,7 +7,7 @@ type CardObject = {
   thumbnail: string;
   author: string;
   title: string;
-  pdf: string;
+  pdf: Blob;
   liked?: boolean;
 };
 
@@ -27,7 +27,7 @@ export async function saveToDatabase(
   thumbnail: string,
   authorName: string,
   title: string,
-  pdf: string,
+  pdf: Blob,
   liked?: boolean
 ) {
   try {
@@ -90,7 +90,8 @@ export async function getBlobUrl(fileName: string): Promise<string> {
   const db = await getDatabase();
   const cardObject = await db.get("pdfFiles", fileName);
   if (cardObject && cardObject.pdf) {
-    return cardObject.pdf;
+    return URL.createObjectURL(cardObject.pdf);
   }
   throw new Error(`No file found for the name ${fileName}`);
 }
+

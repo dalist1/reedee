@@ -9,13 +9,13 @@ type PdfData = {
   currentPageText: string
 }
 
-async function fetchPdfData(fileName: string) {
+async function fetchPdfData(fileName: string, pageNumber: number) {
   try {
     const blobUrl = await getBlobUrl(fileName);
     const pdfDoc = await pdfjs.getDocument(blobUrl).promise;
 
     const numPages = pdfDoc.numPages;
-    const currentPageText = await extractTextFromPage(pdfDoc, 1);
+    const currentPageText = await extractTextFromPage(pdfDoc, pageNumber);
 
     return { blobUrl, numPages, currentPageText };
   } catch (error) {
@@ -25,17 +25,15 @@ async function fetchPdfData(fileName: string) {
 }
 
 type QueryResult = {
-  data: PdfData,
-  isLoading: boolean,
-  isError: boolean,
-  error: Error
+  data: PdfData
 }
 
-export default function usePdfData(fileName: string): QueryResult {
-  const { data: pdfData, isLoading, isError, error } = useQuery({
-    queryKey: ['pdfData'],
-    queryFn: () => fetchPdfData(fileName)
+export default function usePdfData(fileName: string, currentPage: number): QueryResult {
+  const { data: pdfData } = useQuery({
+    queryKey: ['pdfData', currentPage],
+    queryFn: () => fetchPdfData(fileName, currentPage),
+    suspense: true
   });
 
-  return { data: pdfData, isLoading, isError, error };
+  return { data: pdfData };
 }

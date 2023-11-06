@@ -14,7 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 export function Reading({ setIsReadingVisible, fileName }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: pdfData, isLoading, isError, error } = usePdfData(fileName);
+  const { data: pdfData, isLoading, isError, error } = usePdfData(fileName, currentPage);
 
   const goToNextPage = () => {
     if (currentPage < pdfData.numPages) {
@@ -22,15 +22,12 @@ export function Reading({ setIsReadingVisible, fileName }) {
     }
   };
 
+
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
-
-  if (isLoading) {
-    return <></>
-  }
 
   if (isError) {
     return <div>Error: {error.message}</div>;
@@ -58,7 +55,11 @@ export function Reading({ setIsReadingVisible, fileName }) {
               </Suspense>
             </div>
           </div>
-          <PageContent pageText={pdfData.currentPageText} />
+
+          <Suspense fallback={<Loading name="pageContent" />}>
+            <PageContent pageText={pdfData.currentPageText} />
+          </Suspense>
+          
           <TakeAways />
           <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage} />        </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>

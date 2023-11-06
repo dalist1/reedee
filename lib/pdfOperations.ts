@@ -13,25 +13,23 @@ export async function extractTextFromPage(
   return strings.join(" ");
 }
 
-const createBlobUrl = (file: File) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-  
-      reader.onloadend = () => {
-        const blobURL = URL.createObjectURL(
-          new Blob([reader.result as ArrayBuffer], { type: file.type })
-        );
-        resolve(blobURL);
-      };
-  
-      reader.onerror = (error) => {
-        console.error("Error reading file:", error);
-        reject(error);
-      };
-  
-      reader.readAsArrayBuffer(file);
-    });
-  };
+const createBlob = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const blob = new Blob([reader.result as ArrayBuffer], { type: file.type });
+      resolve(blob);
+    };
+
+    reader.onerror = (error) => {
+      console.error("Error reading file:", error);
+      reject(error);
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
+};
   
   const getMetadata = async (blobURL: string) => {
     const pdf = await pdfjs.getDocument(blobURL).promise;
@@ -51,7 +49,8 @@ const createBlobUrl = (file: File) => {
   };
   
   export async function processFile(file: File) {
-    const blobURL = await createBlobUrl(file);
+    const blob = await createBlob(file);
+    const blobURL = URL.createObjectURL(blob);
     const { pdf, metadata } = await getMetadata(blobURL);
     const thumbnail = await renderThumbnail(pdf);
     
@@ -60,7 +59,7 @@ const createBlobUrl = (file: File) => {
       thumbnail,
       authorName: metadata.info.Author as string,
       title: metadata.info.Title as string,
-      pdf: blobURL,
+      pdf: blob,
     };
   }
 

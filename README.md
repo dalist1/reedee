@@ -11,10 +11,6 @@
 
 Reedee is a blazing fast PDF reader, all you have to do is upload the PDF document, and Reedee will take care of the rest.
 
-# Reedee 📚
-
-Reedee is a modern application built using Next.js and React Query. The tech stack includes other notable libraries and tools such as Tailwind CSS, Radix UI, and Framer Motion.
-
 ## Tech Stack 🛠️
 
 - 🚀 [Next.js](https://nextjs.org/)
