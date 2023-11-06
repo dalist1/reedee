@@ -59,7 +59,7 @@ export function Reading({ setIsReadingVisible, fileName }) {
           <Suspense fallback={<Loading name="pageContent" />}>
             <PageContent pageText={pdfData.currentPageText} />
           </Suspense>
-          
+
           <TakeAways />
           <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage} />        </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>

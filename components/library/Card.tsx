@@ -12,7 +12,7 @@ type cardObject = {
   author: string;
   title: string;
   thumbnail: string;
-  pdf: string;
+  pdf: Blob;
 };
 
 export default function Card({ category }) {

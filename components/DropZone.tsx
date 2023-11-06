@@ -44,7 +44,7 @@ export default function DropZone() {
   }, [files]);
 
   return (
-    <div className="bg-gray-400 w-80 h-72 cursor-pointer rounded-3xl space-y-12 font-bold text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
+    <div className="bg-gray-400 mx-auto w-80 h-72 cursor-pointer rounded-3xl space-y-12 font-bold text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
       <div
         {...getRootProps({
           className:
