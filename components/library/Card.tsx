@@ -3,9 +3,10 @@
 import { useQuery } from "@tanstack/react-query";
 import Interactions from "@/components/library/Interactions";
 import Image from "next/image";
-import { getCardObjects } from "@/lib/dbOperations";
 import { Reading } from "../reading/Reading";
 import { useState } from "react";
+import { fetchCardObjects } from "@/lib/fetchCardObjects";
+import LibrarySkeleton from "./LibrarySkeleton";
 
 type cardObject = {
   name: string;
@@ -19,30 +20,27 @@ export default function Card({ category }) {
   const [isReadingVisible, setIsReadingVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["userFiles", category],
-    queryFn: async ({ queryKey }) => {
-      const data = await getCardObjects();
-      const category = queryKey[1];
-      if (category === "Liked") {
-        return data.filter((cardObject) => cardObject.liked);
-      }
-      return data;
-    },
+    queryFn: () => fetchCardObjects(category),
     notifyOnChangeProps: ['data']
   });
 
+  if (isLoading) {
+    return <LibrarySkeleton />
+  }
+
   return (
-    <main className="text-white w-11/12 gap-7 grid lg:grid-cols-12">
+    <>
       {data &&
         data.map((cardObject: cardObject, index: number) => (
           <div
             key={index}
-            className="grid grid-rows-2 gap-y-5 justify-items-center place-content-center sm:col-span-9 items-center p-12 text-center lg:col-span-4 rounded-3xl bg-slate-900"
+            className="flex flex-col justify-evenly items-center gap-y-4 h-[30rem] w-96 bg-slate-900 rounded-3xl"
           >
-            <h1 className="font-extrabold text-xl">{cardObject.title}</h1>
-            <p>Author: {cardObject.author}</p>
-            <div className="flex justify-center items-center w-11/12 mx-auto py-6 rounded-3xl cursor-pointer bg-black bg-[radial-gradient(#2a2a2b_1px,transparent_1px)] [background-size:16px_16px]"
+            <h1 className="font-extrabold text-xl text-center max-h-12">{cardObject.title}</h1>
+            <p className="font-medium">Author: {cardObject.author}</p>
+            <div className="flex justify-center items-center w-72 h-44 mx-auto py-8 rounded-3xl cursor-pointer bg-black bg-[radial-gradient(#2a2a2b_1px,transparent_1px)] [background-size:16px_16px]"
               onClick={() => {
                 setIsReadingVisible(true);
                 setSelectedCard(cardObject);
@@ -66,6 +64,6 @@ export default function Card({ category }) {
           setIsReadingVisible={setIsReadingVisible}
         />
       )}
-    </main>
+    </>
   );
 }

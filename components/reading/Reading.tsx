@@ -8,13 +8,25 @@ import { Suspense } from "react";
 import Loading from "../Loading";
 import Controls from "@/components/reading/Controls"
 import usePdfData from "@/hooks/usePdfData";
+import { Dispatch, SetStateAction } from "react";
+
 
 import * as pdfjs from 'pdfjs-dist';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-export function Reading({ setIsReadingVisible, fileName }) {
+type PdfData = {
+  currentPageText: string;
+  numPages: number;
+};
+
+type ReadingProps = {
+  fileName: string;
+  setIsReadingVisible: Dispatch<SetStateAction<boolean>>;
+};
+
+export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: pdfData, isLoading, isError, error } = usePdfData(fileName, currentPage);
+  const { data: pdfData } = usePdfData(fileName, currentPage);
 
   const goToNextPage = () => {
     if (currentPage < pdfData.numPages) {
@@ -22,16 +34,11 @@ export function Reading({ setIsReadingVisible, fileName }) {
     }
   };
 
-
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
-
-  if (isError) {
-    return <div>Error: {error.message}</div>;
-  }
 
   return (
     <motion.div

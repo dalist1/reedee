@@ -28,6 +28,12 @@ Reedee is a blazing fast PDF reader, all you have to do is upload the PDF docume
 - Progressive Web App (PWA) support.
 - AI page summarization and takeaways.
 
+## Technical features 🚀
+
+- Next.js 14 Partial Prerendering
+- React Server Components
+- Tanstack React Query v5
+
 ## To-Do ✅
 
 - [ ] AI generated page summaries and takeaways
