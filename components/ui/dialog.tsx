@@ -43,13 +43,14 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute p-1 top-3 left-3 rounded-full bg-slate-600/70 transition-opacity opacity-100 focus:outline-none hover:rounded-full disabled:pointer-events-none data-[state=open]:text-slate-500 dark:data-[state=open]:text-slate-400">
+      <DialogPrimitive.Close className="absolute p-1 top-8 left-8 rounded-full bg-slate-600/70 transition-opacity opacity-100 focus:outline-none hover:rounded-full disabled:pointer-events-none data-[state=open]:text-slate-500 dark:data-[state=open]:text-slate-400">
         <FaXmark className="text-white h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
 ))
+
 
 export {
   Dialog,

@@ -36,14 +36,14 @@ export default function SettingsModal(): React.ReactNode {
         <div>
             <AnimatePresence>
                 {isOpen && (
-                    <>
+                    <div className='p-6'>
                         {menuLevel === 1 && (
                             <motion.div
                                 initial={{ opacity: 0, x: -10 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -10 }}
                                 transition={{ duration: 0.2 }}
-                                className="flex flex-col justify-center items-center gap-y-2 bg-slate-900 p-10 shadow-lg text-white rounded-3xl"
+                                className="flex flex-col justify-center items-center gap-y-2 bg-slate-900 p-8 shadow-lg text-white rounded-3xl"
                             >
                                 <span className='font-semibold my-5 text-xl'>
                                     Settings
@@ -75,7 +75,7 @@ export default function SettingsModal(): React.ReactNode {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 10 }}
                                 transition={{ duration: 0.2 }}
-                                className='bg-slate-900 rounded-2xl py-10 gap-y-2 text-white'
+                                className='bg-slate-900 rounded-3xl py-10 gap-y-2 text-white'
                             >
                                 <div className='flex justify-center items-center gap-5 pr-10'>
                                     <button onClick={() => setMenuLevel(prevMenuLevel => prevMenuLevel - 1)} className='hover:text-gray-200 hover:bg-gray-400/5 rounded-full text-white p-3 '>
@@ -88,7 +88,7 @@ export default function SettingsModal(): React.ReactNode {
                                 <OptionsList options={options[selectedOptionIndex].options} handleSwitchChange={handleSwitchChange} mainIndex={selectedOptionIndex} />
                             </motion.div>
                         )}
-                    </>
+                    </div>
                 )}
             </AnimatePresence>
         </div>

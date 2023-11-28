@@ -1,7 +1,5 @@
-// filename OptionsList.js
 import { FC } from 'react';
 import { Switch } from '@/components/ui/switch'
-import { IconType } from 'react-icons'
 
 type Option = {
  name: string;
@@ -20,7 +18,7 @@ type OptionsListProps = {
 
 const OptionsList: FC<OptionsListProps> = ({ options, handleSwitchChange, mainIndex }) => {
  return (
-  <div className='flex flex-col justify-center items-center bg-slate-900 p-10 text-white rounded-2xl'>
+  <div className='flex flex-col justify-center items-center bg-slate-900 p-10 text-white rounded-3xl'>
     {options.map((option, index) => (
       <div
         key={index}
