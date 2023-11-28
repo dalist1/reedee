@@ -57,8 +57,8 @@ const createBlob = (file: File) => {
     return {
       file,
       thumbnail,
-      authorName: metadata.info.Author as string,
-      title: metadata.info.Title as string,
+      authorName: metadata.info.Author,
+      title: metadata.info.Title,
       pdf: blob,
     };
   }

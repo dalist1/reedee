@@ -10,13 +10,16 @@
   "dependencies": {
     "@ducanh2912/next-pwa": "latest",
     "@radix-ui/react-dialog": "latest",
+    "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "latest",
+    "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toast": "latest",
     "@radix-ui/react-tooltip": "latest",
     "@tanstack/react-query": "beta",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-transition-group": "^4.4.9",
     "autoprefixer": "latest",
     "canvas": "latest",
     "class-variance-authority": "latest",
@@ -33,11 +36,11 @@
     "react-icons": "latest",
     "tailwind-merge": "latest",
     "tailwindcss": "latest",
-    "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.2.2"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "prettier": "^3.0.3",
-    "prettier-plugin-tailwindcss": "^0.5.6"
+    "prettier-plugin-tailwindcss": "^0.5.6",
+    "typescript": "5.3.2"
   }
 }

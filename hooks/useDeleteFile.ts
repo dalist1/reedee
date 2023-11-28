@@ -9,7 +9,7 @@ export default function useDeletefile() {
         mutationFn: async (fileName: string) => await removeFile(fileName),
         onSuccess: () => {
             toast({ description: "Files removed successfully!" });
-            queryClient.invalidateQueries(["userFiles"]);
+            queryClient.invalidateQueries({queryKey: ["userFiles"]});
         },
         onError: () => {
             toast({ description: "There was an error, please try again." });

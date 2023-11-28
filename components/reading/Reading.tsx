@@ -57,9 +57,9 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
         <div className="z-10 flex flex-col justify-center items-center pb-20">
           <div className="w-full sm:flex-col items-start sm:max-lg:items-center max-w-6xl sm:max-lg:grid-cols-6 mx-auto h-full p-6 mt-14">
             <div className="text-blue-500 col-span-6 md:col-span-3 bg-blue-500 bg-opacity-10 space-y-8 p-6 rounded-3xl">
-              <Suspense fallback={<Loading name="summary" />}>
+              {/* <Suspense fallback={<Loading name="summary" />}>
                 <Summary />
-              </Suspense>
+              </Suspense> */}
             </div>
           </div>
 
@@ -67,7 +67,7 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
             <PageContent pageText={pdfData.currentPageText} />
           </Suspense>
 
-          <TakeAways />
+          {/* <TakeAways /> */}
           <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage} />        </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
       </div>

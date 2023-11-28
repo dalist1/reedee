@@ -1,0 +1,13 @@
+name: reede-update-deps
+on:
+  schedule:
+    - cron: '0 0 */3 * *'
+jobs:
+  my-job:
+    name: my-job
+    runs-on: ubuntu-latest
+    steps:
+      # ...
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest

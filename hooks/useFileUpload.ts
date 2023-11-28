@@ -13,7 +13,7 @@ export default function useFileUpload() {
       await saveToDatabase(processedData.file, processedData.thumbnail, processedData.authorName, processedData.title, processedData.pdf);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["userFiles"]);
+      queryClient.invalidateQueries({queryKey: ["userFiles"]});
     },
     onError: () => {
       toast({ description: "Error uploading files." });

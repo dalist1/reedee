@@ -31,7 +31,7 @@ export default function AnimatedLike({ size, color, fileName }: AnimatedLikeProp
     },
     onSuccess: (newIsLiked) => {
       queryClient.setQueryData(["likeStatus", fileName], newIsLiked);
-      queryClient.invalidateQueries(["likeStatus", fileName]);
+      queryClient.invalidateQueries({ queryKey: ["likeStatus", fileName] });
       toast({ description: "Success!" });
     },
     onError: () => {

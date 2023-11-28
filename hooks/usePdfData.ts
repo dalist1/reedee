@@ -25,7 +25,7 @@ async function fetchPdfData(fileName: string, pageNumber: number) {
 }
 
 type QueryResult = {
-  data: PdfData
+  data: PdfData;
 }
 
 export default function usePdfData(fileName: string, currentPage: number): QueryResult {

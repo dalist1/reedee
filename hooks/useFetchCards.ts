@@ -1,7 +1,7 @@
 import { getCardObjects } from "@/lib/dbOperations";
 import { useQuery } from "@tanstack/react-query";
 
-export function useFetchCards(category) {
+export function useFetchCards(category: string) {
     const { data } = useQuery({
         queryKey: ["userFiles", category],
         queryFn: async ({ queryKey }) => {

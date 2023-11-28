@@ -7,9 +7,8 @@ import { TbArrowBackUp, TbArrowForwardUp } from 'react-icons/tb'
 import { FaGear } from 'react-icons/fa6'
 import { useState } from 'react';
 import { usePlayAudio } from '@/hooks/usePlayAudio';
-import SettingsModal from "@/components/settings/SettingsModal";
 import AnimatedLike from "@/components/reading/AnimatedLike"
-
+import StyledDropdownMenu from '@/components/settings/SettingsModal'
 
 export default function Controls({ goToNextPage, goToPreviousPage, currentPageText, fileName }) {
     const { playAudio, stopAudio } = usePlayAudio(currentPageText);
@@ -45,7 +44,7 @@ export default function Controls({ goToNextPage, goToPreviousPage, currentPageTe
                     </button>
                 </DialogTrigger>
                 <DialogContent>
-                    <SettingsModal />
+                    <StyledDropdownMenu />
                 </DialogContent>
             </Dialog>
         </div>
