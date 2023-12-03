@@ -8,7 +8,6 @@ import * as pdfjs from 'pdfjs-dist';
 
 import useFileUpload from "@/hooks/useFileUpload";
 
-
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function DropZone() {
@@ -30,7 +29,6 @@ export default function DropZone() {
       setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
     }
   }, [handleFiles]);
-
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "application/pdf",
