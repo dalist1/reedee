@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "latest",
+    "@nextui-org/shared-utils": "^2.0.4",
+    "@nextui-org/system": "^2.0.15",
     "@radix-ui/react-dialog": "latest",
     "@radix-ui/react-slot": "latest",
     "@radix-ui/react-switch": "^1.0.3",
