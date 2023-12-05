@@ -6,9 +6,9 @@ import {
 } from "@/components/ui/tooltip";
 
 type Interactions = {
- Icon: () => React.ReactNode | React.ReactElement;
- tooltipText: string;
- onClick?: () => void;
+  Icon: () => React.ReactNode | React.ReactElement;
+  tooltipText: string;
+  onClick?: () => void;
 }
 
 

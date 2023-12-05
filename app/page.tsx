@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import DropZone from "../components/DropZone";
 import Library from "@/components/library/Library";
 import { getCardObjects } from "@/lib/dbOperations";
 import { useQuery } from "@tanstack/react-query";

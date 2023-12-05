@@ -36,7 +36,7 @@ export default function Card({ category }) {
         data.map((cardObject: cardObject, index: number) => (
           <div
             key={index}
-            className="flex flex-col justify-evenly items-center gap-y-4 h-[30rem] w-[22rem] bg-slate-900 rounded-3xl"
+            className="flex flex-col justify-evenly items-center gap-y-4 h-[30rem] w-[22rem] bg-slate-900 rounded-3xl p-2"
           >
             <h1 className="font-extrabold text-xl text-center max-h-12">{cardObject.title}</h1>
             <p className="font-medium">Author: {cardObject.author}</p>

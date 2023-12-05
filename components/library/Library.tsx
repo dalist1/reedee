@@ -8,7 +8,7 @@ export default function Library() {
 
   return (
     <main className="text-white py-10 overflow-y-scroll h-screen w-screen bg-black [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]">
-      <div className="flex flex-col justify-center overflow-y-scroll items-center gap-y-10 lg:max-w-full sm:max-w-md">
+      <div className="flex flex-col justify-center overflow-y-scroll items-center gap-y-10 mx-auto lg:max-w-6xl sm:max-w-md">
         <div className="flex items-center justify-between gap-x-10">
           <Categories category={category} setCategory={setCategory} />
           <CallToAction />

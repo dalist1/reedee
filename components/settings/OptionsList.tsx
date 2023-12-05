@@ -41,16 +41,13 @@ const ButtonWrapper: FC<{ option: Option, index: number, handleCheckedChange: (i
         </span>
       </div>
       <span>{option.name}</span>
-      <span>
+      <span className="z-50">
         {option.component === 'switch' &&
-          <div className='pointer-events-none'>
-            <Switch
-              id={`switch-${index}`}
-              checked={option.checked}
-              onCheckedChange={() => handleCheckedChange(index)}
-              className='pointer-events-none'
-            />
-          </div>}
+          <Switch
+            id={`switch-${index}`}
+            checked={option.checked}
+            onCheckedChange={() => handleCheckedChange(index)}
+          />}
         {option.component === 'toggle' && <ToggleButton />}
       </span>
     </div>

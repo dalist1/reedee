@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import PageContent from "@/components/reading/PageContent";
 import Summary from "@/components/reading/Summary";
-import TakeAways from "./Takeaways";
+import TakeAways from "@/components/reading/Takeaways";
 import { Suspense } from "react";
 import Loading from "../Loading";
 import Controls from "@/components/reading/Controls"
@@ -21,6 +21,7 @@ type PdfData = {
 
 type ReadingProps = {
   fileName: string;
+  selectedCard: ""
   setIsReadingVisible: Dispatch<SetStateAction<boolean>>;
 };
 
