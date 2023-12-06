@@ -1,15 +1,7 @@
 import { openDB, IDBPDatabase } from "idb";
+import { CardObject } from "@/types/card";
 
 let db: IDBPDatabase | null = null;
-
-type CardObject = {
-  name: string;
-  thumbnail: string;
-  author: string;
-  title: string;
-  pdf: Blob;
-  liked?: boolean;
-};
 
 export async function getDatabase() {
   if (!db) {
@@ -22,29 +14,15 @@ export async function getDatabase() {
   return db;
 }
 
-export async function saveToDatabase(
-  file: File,
-  thumbnail: string,
-  authorName: string,
-  title: string,
-  pdf: Blob,
-  liked?: boolean
-) {
+export async function saveToDatabase(cardObject: CardObject) {
+  const { file, thumbnail, authorName, title, pdf } = cardObject;
   try {
-    const cardObject: CardObject = {
-      name: file.name,
-      thumbnail: thumbnail,
-      author: authorName,
-      title: title,
-      pdf: pdf,
-      liked: liked
-    };
-
     await db.put("pdfFiles", cardObject);
   } catch (error) {
     throw new Error("Error saving file to database");
   }
-}
+ }
+ 
 
 export async function removeFile(fileName: string) {
   try {

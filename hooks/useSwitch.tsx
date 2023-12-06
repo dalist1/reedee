@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { useBionicStore } from '@/stores/useBionicStore';
 import { useSummaryStore } from '@/stores/useSummaryStore';
-import { useTakeawaysStore } from '@/stores/useTakeawaysSlice';
+import { useTakeawaysStore } from '@/stores/useTakeawaysStore';
 
 type Option = {
     name: string;

@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Fragment } from "react";
+import * as pdfjs from 'pdfjs-dist';
+
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,3 +28,7 @@ export function splitTextIntoBionicComponents(text: string) {
     return word + ' ';
   });
 }
+
+// pdfjsworker under '@/lib/utils'
+
+export default pdfjs

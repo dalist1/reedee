@@ -7,14 +7,8 @@ import { Reading } from "../reading/Reading";
 import { useState } from "react";
 import { fetchCardObjects } from "@/lib/fetchCardObjects";
 import LibrarySkeleton from "./LibrarySkeleton";
+import { CardObject } from "@/types/card";
 
-type cardObject = {
-  name: string;
-  author: string;
-  title: string;
-  thumbnail: string;
-  pdf: Blob;
-};
 
 export default function Card({ category }) {
   const [isReadingVisible, setIsReadingVisible] = useState(false);
@@ -33,13 +27,13 @@ export default function Card({ category }) {
   return (
     <>
       {data &&
-        data.map((cardObject: cardObject, index: number) => (
+        data.map((cardObject: CardObject, index: number) => (
           <div
             key={index}
             className="flex flex-col justify-evenly items-center gap-y-4 h-[30rem] w-[22rem] bg-slate-900 rounded-3xl p-2"
           >
             <h1 className="font-extrabold text-xl text-center max-h-12">{cardObject.title}</h1>
-            <p className="font-medium">Author: {cardObject.author}</p>
+            <p className="font-medium">Author: {cardObject.authorName}</p>
             <div className="flex justify-center items-center w-72 h-44 mx-auto py-8 rounded-3xl cursor-pointer bg-black bg-[radial-gradient(#2a2a2b_1px,transparent_1px)] [background-size:16px_16px]"
               onClick={() => {
                 setIsReadingVisible(true);

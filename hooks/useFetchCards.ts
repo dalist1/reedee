@@ -1,8 +1,8 @@
 import { getCardObjects } from "@/lib/dbOperations";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function useFetchCards(category: string) {
-    const { data } = useQuery({
+    const { data } = useSuspenseQuery({
         queryKey: ["userFiles", category],
         queryFn: async ({ queryKey }) => {
             const data = await getCardObjects();
@@ -12,7 +12,6 @@ export function useFetchCards(category: string) {
             }
             return data;
         },
-        suspense: true,
         notifyOnChangeProps: ['data']
     });
 

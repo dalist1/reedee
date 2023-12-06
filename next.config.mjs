@@ -1,10 +1,13 @@
-/** @type {import('next').NextConfig} */
+// @ts-check
+import withSerwistInit from "@serwist/next";
 
-const withPWA = require("@ducanh2912/next-pwa").default({
-  dest: "public",
-  cacheOnFrontEndNav: true
+const withSerwist = withSerwistInit({
+  cacheOnFrontEndNav: true,
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
 });
 
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   experimental: {
     ppr: true,
@@ -23,4 +26,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withPWA(nextConfig);
+export default withSerwist(nextConfig);

@@ -1,6 +1,12 @@
-import { MockAPI } from "@/lib/utils";
+import { useFetchSummary } from "@/hooks/useFetchSummary"
+
 
 export default async function Summary() {
-  const res = await MockAPI();
-  return <>Summary{res}</>;
+  const { data } = useFetchSummary()
+
+  return (
+    <span>
+      {data}
+    </span>
+  )
 } 

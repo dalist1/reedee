@@ -1,7 +1,7 @@
 "use client"
 
-import { useRipple } from './use-ripple';
-import Ripple from './ripple';
+import { useRipple } from '../ui/use-ripple';
+import Ripple from '../ui/ripple';
 import { TbMultiplier1X, TbMultiplier15X, TbMultiplier2X } from "react-icons/tb";
 import { ReactNode } from 'react';
 import { useTextStore } from '@/stores/useTextStore';
@@ -39,7 +39,7 @@ const Button = ({ index }) => {
             className={`relative overflow-hidden hover:text-white p-2.5 text-gray-300 rounded-xl ${isActive ? 'bg-blue-500 text-white' : 'bg-slate-950/30 text-slate-300'}`}
             onClick={handleButtonClick}>
             {ic.icon}
-            <Ripple ripples={ripples} onClear={onClear} className="absolute inset-0" />
+            <Ripple ripples={ripples} onClear={onClear} className="absloute inset-0"/>
         </button>
     );
 }

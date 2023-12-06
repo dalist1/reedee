@@ -11,6 +11,11 @@
 
 Reedee is a blazing fast PDF reader, all you have to do is upload the PDF document, and Reedee will take care of the rest.
 
+## Privacy 🔒
+
+- Bring your PDF, Reedee will do the rest.
+- Your data is stored within your Web Browser using IndexedDB.
+
 ## Tech Stack 🛠️
 
 - 🚀 [Next.js](https://nextjs.org/)

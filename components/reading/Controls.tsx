@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { usePlayAudio } from '@/hooks/usePlayAudio';
 import AnimatedLike from "@/components/reading/AnimatedLike"
 import StyledDropdownMenu from '@/components/settings/SettingsModal'
-import Ripple from '../settings/ripple'
-import { useRipple } from '../settings/use-ripple'
+import Ripple from '../ui/ripple'
+import { useRipple } from '../ui/use-ripple'
 
 export default function Controls({ goToNextPage, goToPreviousPage, currentPageText, fileName }) {
     const { ripples, onClick, onClear } = useRipple();
@@ -27,7 +27,7 @@ export default function Controls({ goToNextPage, goToPreviousPage, currentPageTe
     };
 
     return (
-        <div className="z-50 flex h-[4.5rem] justify-between items-center w-[22rem] md:w-96 fixed mx-3 font-medium text-sm bottom-4 p-4 bg-slate-950/80 backdrop-blur-sm rounded-full">
+        <div className="z-50 flex h-[4.5rem] justify-between items-center w-[22rem] md:w-96 fixed mt-10 mx-3 font-medium text-sm bottom-4 p-4 bg-slate-950/80 backdrop-blur-sm rounded-full">
             <span className="flex justify-center items-center p-4 cursor-pointer">
                 <AnimatedLike fileName={fileName} size={24} color="#6b7280" />
             </span>

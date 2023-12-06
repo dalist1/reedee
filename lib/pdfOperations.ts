@@ -1,7 +1,6 @@
-import * as pdfjs from 'pdfjs-dist';
+import pdfjs from "@/lib/utils";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
 
 export async function extractTextFromPage(
   pdf: pdfjs.PDFDocumentProxy,

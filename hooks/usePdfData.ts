@@ -1,13 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { extractTextFromPage } from "@/lib/pdfOperations";
 import { getBlobUrl } from "@/lib/dbOperations";
-import * as pdfjs from 'pdfjs-dist';
-
-type PdfData = {
-  blobUrl: string,
-  numPages: number,
-  currentPageText: string
-}
+import pdfjs from "@/lib/utils";
+import { PdfData } from '@/types/pdf'
 
 async function fetchPdfData(fileName: string, pageNumber: number) {
   try {
@@ -29,10 +24,9 @@ type QueryResult = {
 }
 
 export default function usePdfData(fileName: string, currentPage: number): QueryResult {
-  const { data: pdfData } = useQuery({
+  const { data: pdfData } = useSuspenseQuery({
     queryKey: ['pdfData', currentPage],
-    queryFn: () => fetchPdfData(fileName, currentPage),
-    suspense: true
+    queryFn: () => fetchPdfData(fileName, currentPage)
   });
 
   return { data: pdfData };

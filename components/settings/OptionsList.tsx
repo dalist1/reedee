@@ -1,26 +1,9 @@
 import { FC, useCallback } from 'react';
 import { Switch } from '@/components/ui/switch'
 import ToggleButton from '@/components/settings/ToggleButtons';
-import { useRipple } from './use-ripple';
-import Ripple from './ripple';
-
-type Option = {
-  name: string;
-  icon: React.ReactNode;
-  index?: number;
-  checked: boolean;
-  component?: string;
-  options?: Option[];
-  handler: () => void;
-}
-
-type SwitchChangeHandler = (mainIndex: number, index: number) => void;
-
-type OptionsListProps = {
-  options: Option[];
-  handleSwitchChange: SwitchChangeHandler;
-  mainIndex: number;
-};
+import { useRipple } from '../ui/use-ripple';
+import Ripple from '../ui/ripple';
+import { Option, OptionsListProps } from "@/types/optionList"
 
 const ButtonWrapper: FC<{ option: Option, index: number, handleCheckedChange: (index: number) => void }> = ({ option, index, handleCheckedChange }) => {
   const { ripples, onClick, onClear } = useRipple();
@@ -34,7 +17,7 @@ const ButtonWrapper: FC<{ option: Option, index: number, handleCheckedChange: (i
         onClick(event);
       }}
     >
-      <Ripple ripples={ripples} onClear={onClear} className='absolute inset-0' />
+      <Ripple ripples={ripples} onClear={onClear} className="absloute inset-0"/>
       <div className="bg-slate-950 p-4 justify-start items-center rounded-full">
         <span className="flex justify-start text-white cursor-pointer bg-slate-950 hover:bg-slate-900 rounded-full">
           {option.icon}

@@ -1,16 +1,24 @@
 "use client";
 
+import Ripple from '@/components/ui/ripple'
+
+// Hooks
+import { FileRejection, useDropzone } from "react-dropzone";
+import useFileUpload from "@/hooks/useFileUpload";
 import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useRipple } from '@/components/ui/use-ripple'
+
+// Icons
 import { VscFiles } from "react-icons/vsc";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import * as pdfjs from 'pdfjs-dist';
 
-import useFileUpload from "@/hooks/useFileUpload";
+import pdfjs from '@/lib/utils';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function DropZone() {
+  const { ripples, onClick, onClear } = useRipple()
+
   const uploadFiles = useFileUpload();
 
   const [files, setFiles] = useState([]);
@@ -22,27 +30,30 @@ export default function DropZone() {
     });
   }, [uploadFiles]);
 
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: File[]) => {
+  const onDrop = useCallback((acceptedFiles: File[], fileRejections: FileRejection[]) => {
     handleFiles(acceptedFiles);
 
-    if (rejectedFiles?.length) {
-      setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
+    if (fileRejections?.length) {
+      setRejected((previousFiles) => [...previousFiles, ...fileRejections]);
     }
   }, [handleFiles]);
 
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: "application/pdf",
+    accept: { file: ["application/pdf"] },
     maxSize: 1024 * 1000 * 50,
     maxFiles: 1,
     onDrop,
   });
+
 
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file));
   }, [files]);
 
   return (
-    <div className="bg-gray-400 mx-auto w-80 h-72 cursor-pointer rounded-3xl space-y-12 font-bold text-white bg-opacity-20 drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-lg backdrop-blur-md shadow-custom">
+    <div className="bg-slate-800 select-none relative overflow-hidden mx-auto w-80 h-72 cursor-pointer rounded-3xl space-y-12 font-bold text-white drop-shadow-lg border border-[#FF1CF7] hover:backdrop-blur-xl backdrop-blur-lg shadow-custom"
+      onClick={(event) => onClick(event)}>
       <div
         {...getRootProps({
           className:
@@ -70,6 +81,7 @@ export default function DropZone() {
           )}
         </>
       </div>
+      <Ripple ripples={ripples} onClear={onClear} className="absloute inset-0" />
     </div>
   );
 }

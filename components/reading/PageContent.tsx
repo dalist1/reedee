@@ -14,7 +14,7 @@ export default function PageContent({ pageText }) {
     : pageText.split(' ').map((word, i) => <Fragment key={i}>{word + ' '}</Fragment>);
 
   return (
-    <div className="sm:flex-col items-start sm:max-lg:items-center max-w-6xl sm:max-lg:grid-cols-6 mx-auto h-full p-6">
+    <div className="sm:flex-col items-start sm:max-lg:items-center max-w-6xl sm:max-lg:grid-cols-6 mx-auto h-full">
       <div className="flex flex-col col-span-6 md:col-span-3 bg-gray-800 p-6 rounded-3xl justify-end relative">
         <div className="flex justify-end">
           <AiOutlineExpandAlt

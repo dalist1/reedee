@@ -10,7 +10,13 @@ export default function useFileUpload() {
   const { mutate: uploadFiles } = useMutation({
     mutationFn: async (file: File) => {
       const processedData = await processFile(file);
-      await saveToDatabase(processedData.file, processedData.thumbnail, processedData.authorName, processedData.title, processedData.pdf);
+      await saveToDatabase({
+        file: processedData.file,
+        thumbnail: processedData.thumbnail,
+        authorName: processedData.authorName,
+        title: processedData.title,
+        pdf: processedData.pdf
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["userFiles"]});
@@ -18,7 +24,7 @@ export default function useFileUpload() {
     onError: () => {
       toast({ description: "Error uploading files." });
     },
-  });
+   });
 
   return uploadFiles;
 }
