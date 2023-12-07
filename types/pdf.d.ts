@@ -3,3 +3,16 @@ export type PdfData = {
     numPages: number,
     currentPageText: string
   }
+
+export type ProcessedDataProps = {
+  file: File,
+  thumbnail: string;
+  author: string;
+  title: string;
+  pdf: BlobUrl;
+}
+
+export type MetadataInfo = {
+  Author: string;
+  Title: string;
+}

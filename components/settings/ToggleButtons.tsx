@@ -39,7 +39,7 @@ const Button = ({ index }) => {
             className={`relative overflow-hidden hover:text-white p-2.5 text-gray-300 rounded-xl ${isActive ? 'bg-blue-500 text-white' : 'bg-slate-950/30 text-slate-300'}`}
             onClick={handleButtonClick}>
             {ic.icon}
-            <Ripple ripples={ripples} onClear={onClear} className="absloute inset-0"/>
+            <Ripple ripples={ripples} onClear={onClear} className="absloute inset-0" />
         </button>
     );
 }

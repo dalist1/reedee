@@ -12,9 +12,6 @@ import { useRipple } from '@/components/ui/use-ripple'
 import { VscFiles } from "react-icons/vsc";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
-import pdfjs from '@/lib/utils';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function DropZone() {
   const { ripples, onClick, onClear } = useRipple()
@@ -45,7 +42,6 @@ export default function DropZone() {
     maxFiles: 1,
     onDrop,
   });
-
 
   useEffect(() => {
     return () => files.forEach((file) => URL.revokeObjectURL(file));

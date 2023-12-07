@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { Fragment } from "react";
 import * as pdfjs from 'pdfjs-dist';
 
+export default pdfjs;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -29,6 +30,3 @@ export function splitTextIntoBionicComponents(text: string) {
   });
 }
 
-// pdfjsworker under '@/lib/utils'
-
-export default pdfjs

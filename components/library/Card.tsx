@@ -30,10 +30,10 @@ export default function Card({ category }) {
         data.map((cardObject: CardObject, index: number) => (
           <div
             key={index}
-            className="flex flex-col justify-evenly items-center gap-y-4 h-[30rem] w-[22rem] bg-slate-900 rounded-3xl p-2"
+            className="flex flex-col justify-evenly items-center gap-y-4 h-[30rem] w-[22rem] bg-slate-900 rounded-3xl p-4"
           >
             <h1 className="font-extrabold text-xl text-center max-h-12">{cardObject.title}</h1>
-            <p className="font-medium">Author: {cardObject.authorName}</p>
+            <p className="font-medium">Author: {cardObject.author}</p>
             <div className="flex justify-center items-center w-72 h-44 mx-auto py-8 rounded-3xl cursor-pointer bg-black bg-[radial-gradient(#2a2a2b_1px,transparent_1px)] [background-size:16px_16px]"
               onClick={() => {
                 setIsReadingVisible(true);

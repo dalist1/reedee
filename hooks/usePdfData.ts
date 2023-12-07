@@ -26,7 +26,7 @@ type QueryResult = {
 export default function usePdfData(fileName: string, currentPage: number): QueryResult {
   const { data: pdfData } = useSuspenseQuery({
     queryKey: ['pdfData', currentPage],
-    queryFn: () => fetchPdfData(fileName, currentPage)
+    queryFn: () => fetchPdfData(fileName, currentPage),
   });
 
   return { data: pdfData };

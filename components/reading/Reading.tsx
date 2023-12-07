@@ -1,20 +1,16 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import PageContent from "@/components/reading/PageContent";
 import Summary from "@/components/reading/Summary";
 import TakeAways from "@/components/reading/Takeaways";
 import { Suspense } from "react";
-import Loading from "../Loading";
+import Loading from "@/components/Loading";
 import Controls from "@/components/reading/Controls"
 import usePdfData from "@/hooks/usePdfData";
 import { useNavigationStore } from "@/stores/useNavigationStore";
 import { ReadingProps } from "@/types/reading";
 import { useSummaryStore } from "@/stores/useSummaryStore";
 import { useTakeawaysStore } from "@/stores/useTakeawaysStore";
-
-// pdfjs Worker
-import pdfjs from "@/lib/utils";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import { FaChevronLeft } from "react-icons/fa6";
 
 export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
   const takeaways = useTakeawaysStore((st) => st.isTakeawaysEnabled)
@@ -31,9 +27,14 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
       transition={{ duration: 0.3 }}
     >
       <div className="z-50 absolute overflow-y-scroll bg-slate-950 top-0 left-0 w-screen h-screen">
-        <Button className="absolute top-4 right-4" onClick={() => setIsReadingVisible(false)}>
-          Back
-        </Button>
+
+        <button className="absolute bg-slate-800 rounded-2xl top-6 right-6 flex justify-center items-center gap-x-4 p-4" onClick={() => setIsReadingVisible(false)}>
+          <FaChevronLeft />
+          <span>
+            Back
+          </span>
+        </button>
+
         <div className="z-10 flex flex-col justify-center items-center gap-y-10 my-20 p-6">
 
           {summary &&
@@ -60,7 +61,7 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
             </div>
           }
 
-          <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={goToNextPage} goToPreviousPage={goToPreviousPage} />
+          <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={() => goToNextPage(pdfData.numPages)} goToPreviousPage={() => goToPreviousPage(pdfData.numPages)} />
         </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
       </div>

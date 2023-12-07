@@ -1,20 +1,13 @@
 import { motion } from "framer-motion";
 import { updateLikeStatus, getCardObjects } from "@/lib/dbOperations";
-import { useToast } from "../ui/use-toast";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-
-type AnimatedLikeProps = {
-  size: number;
-  color: string;
-  fileName?: string;
-};
+import { AnimatedLikeProps } from "@/types/animatedLike";
 
 export default function AnimatedLike({ size, color, fileName }: AnimatedLikeProps) {
 
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { status: statusLike, data: isLiked } = useQuery({
+  const { data: isLiked } = useQuery({
     queryKey: ["likeStatus", fileName],
     queryFn: async () => {
       const cardObjects = await getCardObjects();
@@ -32,10 +25,6 @@ export default function AnimatedLike({ size, color, fileName }: AnimatedLikeProp
     onSuccess: (newIsLiked) => {
       queryClient.setQueryData(["likeStatus", fileName], newIsLiked);
       queryClient.invalidateQueries({ queryKey: ["likeStatus", fileName] });
-      toast({ description: "Success!" });
-    },
-    onError: () => {
-      toast({ description: "Failed." });
     },
   });
 
