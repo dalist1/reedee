@@ -8,16 +8,3 @@ body,
   height: 100%;
   -webkit-tap-highlight-color: transparent;
 }
-
-.ripple {
-  @apply absolute bg-gray-300 rounded-full opacity-50;
-  transform: scale(0);
-  animation: ripple 500ms linear;
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}

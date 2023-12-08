@@ -1,12 +1,23 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import TanStackProvider from "./providers";
-
-const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
 const APP_NAME = "Reedee";
 const APP_DESCRIPTION = "Enable your reading superpower.";
+
+import { Poppins, Gochi_Hand } from 'next/font/google';
+
+export const poppins = Poppins({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-poppins'
+});
+
+export const gochi_hand = Gochi_Hand({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-gochi-hand'
+});
 
 export const runtime = "edge";
 
@@ -39,13 +50,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={
-          poppins.className
-        }
-        style={{ backgroundSize: "cover" }}
-      >
+    <html lang="en" className={`${poppins.variable}`}>
+      <body className={`font-poppins ${gochi_hand.variable}`}>
         <TanStackProvider>{children}</TanStackProvider>
       </body>
     </html>

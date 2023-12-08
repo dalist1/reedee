@@ -33,6 +33,7 @@ export default function AnimatedLike({ size, color, fileName }: AnimatedLikeProp
       whileTap={{ scale: 3 }}
       transition={{ duration: 0.8 }}
       onClick={() => fetchLikes()}
+      className="select-none"
     >
       <svg xmlns="http://www.w3.org/2000/svg"
         width={size}

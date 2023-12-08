@@ -9,8 +9,8 @@ import { useState } from 'react';
 import { usePlayAudio } from '@/hooks/usePlayAudio';
 import AnimatedLike from "@/components/reading/AnimatedLike"
 import StyledDropdownMenu from '@/components/settings/SettingsModal'
-import Ripple from '../ui/ripple'
-import { useRipple } from '../ui/use-ripple'
+import Ripple from '@/components/ui/ripple'
+import { useRipple } from '@/components/ui/use-ripple'
 
 export default function Controls({ goToNextPage, goToPreviousPage, currentPageText, fileName }) {
     const { ripples, onClick, onClear } = useRipple();
