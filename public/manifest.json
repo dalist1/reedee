@@ -2,7 +2,7 @@
     "name": "Reedee",
     "short_name": "Reedee",
     "display": "standalone",
-    "orientation": "portrait",
+    "orientation": "any",
     "theme_color": "#000000",
     "background_color": "#000000",
     "start_url": "/",

@@ -3,7 +3,6 @@ import type { PrecacheEntry } from "@serwist/precaching";
 import { installSerwist } from "@serwist/sw";
 
 declare const self: ServiceWorkerGlobalScopeEventMap & {
-  // Change this attribute's name to your `injectionPoint`.
   __SW_MANIFEST: (PrecacheEntry | string)[] | undefined;
 };
 

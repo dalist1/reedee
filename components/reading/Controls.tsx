@@ -12,7 +12,7 @@ import StyledDropdownMenu from '@/components/settings/SettingsModal'
 import Ripple from '@/components/ui/ripple'
 import { useRipple } from '@/components/ui/use-ripple'
 
-export default function Controls({ goToNextPage, goToPreviousPage, currentPageText, fileName }) {
+export default function Controls({ currentPage, numPages, goToNextPage, goToPreviousPage, currentPageText, fileName }) {
     const { ripples, onClick, onClear } = useRipple();
     const { playAudio, stopAudio } = usePlayAudio(currentPageText);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -31,18 +31,28 @@ export default function Controls({ goToNextPage, goToPreviousPage, currentPageTe
             <span className="flex justify-center items-center p-4 cursor-pointer">
                 <AnimatedLike fileName={fileName} size={24} color="#6b7280" />
             </span>
-            <button className='flex cursor-pointer justify-items items-center p-3 text-gray-500 hover:text-white rounded-full' onClick={() => goToPreviousPage()}>
+            <button
+                className={`flex cursor-pointer justify-items items-center p-3 ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-white'}`}
+                onClick={() => currentPage !== 1 && goToPreviousPage()}
+                disabled={currentPage === 1}
+            >
                 <TbArrowBackUp size={30} />
             </button>
+
+
             <button className='relative p-3 cursor-pointer shadow-sm bg-blue-900/50 hover:bg-blue-900/70 text-white rounded-full overflow-hidden'
                 onClick={(event) => { toggleAudio(); onClick(event) }}>
                 {isPlaying ? <FaPause size={26} /> : <FaPlay size={26} />}
                 <Ripple ripples={ripples} onClear={onClear} className='absolute inset-0' />
             </button>
-            <button className='flex cursor-pointer justify-items items-center p-3 text-gray-500 hover:text-white'
-                onClick={() => goToNextPage()}>
+            <button
+                className={`flex cursor-pointer justify-items items-center p-3 ${currentPage === numPages ? 'text-neutral-700 cursor-not-allowed' : 'text-gray-300 hover:text-white'}`}
+                onClick={() => goToNextPage()}
+                disabled={currentPage === numPages}
+            >
                 <TbArrowForwardUp size={30} />
             </button>
+
             <Dialog>
                 <DialogTrigger>
                     <button className='flex cursor-pointer justify-items items-center p-3 text-gray-500 hover:text-white'>

@@ -28,7 +28,7 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
     >
       <div className="z-50 absolute overflow-y-scroll bg-slate-950 top-0 left-0 w-screen h-screen">
 
-        <button className="absolute bg-slate-800 rounded-2xl top-6 right-6 flex justify-center items-center gap-x-4 p-4" onClick={() => setIsReadingVisible(false)}>
+        <button className="absolute bg-slate-800 rounded-2xl top-6 right-6 flex justify-center items-center gap-x-4 p-3" onClick={() => setIsReadingVisible(false)}>
           <FaChevronLeft />
           <span>
             Back
@@ -47,8 +47,8 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
             </div>
           }
 
-          <Suspense>
-            <PageContent pageText={pdfData.currentPageText} />
+          <Suspense fallback={< Loading name="page content." color="blue" />}>
+            <PageContent pageText={pdfData.currentPageText} currentPage={currentPage} numPages={pdfData.numPages} />
           </Suspense>
 
           {takeaways &&
@@ -61,7 +61,7 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
             </div>
           }
 
-          <Controls fileName={fileName} currentPageText={pdfData.currentPageText} goToNextPage={() => goToNextPage(pdfData.numPages)} goToPreviousPage={() => goToPreviousPage(pdfData.numPages)} />
+          <Controls fileName={fileName} numPages={pdfData.numPages} currentPageText={pdfData.currentPageText} currentPage={currentPage} goToNextPage={() => goToNextPage(pdfData.numPages)} goToPreviousPage={() => goToPreviousPage(pdfData.numPages)} />
         </div>
         <div className="pointer-events-none fixed left-0 bottom-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
       </div>
