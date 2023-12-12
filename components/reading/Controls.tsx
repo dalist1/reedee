@@ -39,7 +39,6 @@ export default function Controls({ currentPage, numPages, goToNextPage, goToPrev
                 <TbArrowBackUp size={30} />
             </button>
 
-
             <button className='relative p-3 cursor-pointer shadow-sm bg-blue-900/50 hover:bg-blue-900/70 text-white rounded-full overflow-hidden'
                 onClick={(event) => { toggleAudio(); onClick(event) }}>
                 {isPlaying ? <FaPause size={26} /> : <FaPlay size={26} />}

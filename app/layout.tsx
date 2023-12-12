@@ -51,7 +51,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className={`font-poppins ${gochi_hand.variable}`}>
+      <body className={`font-poppins ${gochi_hand.variable} w-full h-full`}>
         <TanStackProvider>{children}</TanStackProvider>
       </body>
     </html>

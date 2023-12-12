@@ -1,29 +1,35 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect } from 'react';
+import usePlayAudioStore from '@/stores/usePlayAudioStore';
+import { useNavigationStore } from '@/stores/useNavigationStore'; // Import the navigation store
 
-export const usePlayAudio = (currentPageText) => {
-  const [audio, setAudio] = useState(null);
+export const usePlayAudio = (currentPageText: string) => {
+  const { audioUrl, setAudioUrl } = usePlayAudioStore();
+  const { currentPage } = useNavigationStore(); // Use the navigation store to get the currentPage state
 
   useEffect(() => {
     if (currentPageText) {
-      const audioUrl = `https://gttsfastapi.vercel.app/tts/en?text=${currentPageText}`;
-      const audio = new Audio(audioUrl);
-      setAudio(audio);
+      const newAudioUrl = `https://gttsfastapi.vercel.app/tts/en?text=${currentPageText}`;
+      setAudioUrl(newAudioUrl);
     }
-  }, [currentPageText]);
+  }, [currentPageText, setAudioUrl]);
+
+  useEffect(() => {
+    setAudioUrl(null);
+  }, [currentPage, setAudioUrl]);
 
   const playAudio = () => {
-    if (audio) {
+    if (audioUrl) {
+      const audio = new Audio(audioUrl);
       audio.play();
     }
   };
 
   const stopAudio = () => {
-    if (audio) {
+    if (audioUrl) {
+      const audio = new Audio(audioUrl);
       audio.pause();
     }
   };
 
   return { playAudio, stopAudio };
 };
-

@@ -35,7 +35,6 @@
     "tailwind-merge": "latest",
     "tailwindcss": "latest",
     "tailwindcss-animate": "^1.0.7",
-    "vercel": "^32.6.1",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
