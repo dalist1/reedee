@@ -32,9 +32,11 @@
     "react-dom": "latest",
     "react-dropzone": "latest",
     "react-icons": "latest",
+    "react-use-audio-player": "^2.2.0",
     "tailwind-merge": "latest",
     "tailwindcss": "latest",
     "tailwindcss-animate": "^1.0.7",
+    "vercel": "^32.7.2",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
