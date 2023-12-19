@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
-import { useGlobalAudioPlayer } from 'react-use-audio-player';
+import { useAudioPlayer } from 'react-use-audio-player';
 
 function splitTextIntoSentences(text) {
   return text.match(/[^\.!\?]+[\.!\?]+/g);
 }
 
 export const usePlayAudio = (currentPageText) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
-  const { load, stop, playing, togglePlayPause } = useGlobalAudioPlayer();
-
+  const { load, playing, togglePlayPause } = useAudioPlayer();
   const textChunks = useRef([]);
+
   useEffect(() => {
     if (currentPageText) {
       textChunks.current = splitTextIntoSentences(currentPageText).map(
@@ -20,21 +20,39 @@ export const usePlayAudio = (currentPageText) => {
     }
   }, [currentPageText]);
 
+  const preloadNextSentence = useCallback(async (nextSentence) => {
+    await fetch(nextSentence);
+    console.log('Preloaded successfully: ', nextSentence);
+  }, []);
+
+  const playNextSentence = useCallback(
+    (nextSentence) => {
+      load(`https://gttsfastapi.vercel.app/tts/en?text=${encodeURIComponent(nextSentence)}`, {
+        autoplay: true,
+        html5: true,
+        format: 'mp3',
+      });
+    },
+    [load],
+  );
+
   useEffect(() => {
     if (textChunks.current.length > 0 && currentChunkIndex < textChunks.current.length) {
-      setIsLoading(true);
       load(textChunks.current[currentChunkIndex], {
         autoplay: true,
         html5: true,
         format: 'mp3',
-        onend: () => setCurrentChunkIndex((index) => (index + 1) % textChunks.current.length),
+        onload: () => {
+          setIsLoading(false);
+          preloadNextSentence(textChunks.current[currentChunkIndex + 1]);
+        },
+        onend: () => {
+          setCurrentChunkIndex((index) => (index + 1) % textChunks.current.length);
+          playNextSentence(textChunks.current[currentChunkIndex]);
+        },
       });
     }
   }, [currentChunkIndex, load]);
 
-  const stopAudio = useCallback(() => {
-    stop();
-  }, [stop]);
-
-  return { stopAudio, isLoading, isPlaying: playing, togglePlayPause };
+  return { playing, togglePlayPause, isLoading };
 };

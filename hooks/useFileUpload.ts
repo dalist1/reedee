@@ -5,7 +5,7 @@ import { CardObject } from '@/types/card';
 
 export default function useFileUpload() {
   const queryClient = useQueryClient();
-  
+
   const { mutate: uploadFiles } = useMutation({
     mutationFn: async (file: File) => {
       const processedData = await processFile(file);

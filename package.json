@@ -8,13 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
-    "@nextui-org/shared-utils": "^2.0.4",
-    "@nextui-org/system": "^2.0.15",
+    "@nextui-org/shared-utils": "latest",
+    "@nextui-org/system": "latest",
     "@radix-ui/react-dialog": "latest",
-    "@radix-ui/react-switch": "^1.0.3",
+    "@radix-ui/react-switch": "latest",
     "@radix-ui/react-tooltip": "latest",
-    "@serwist/next": "^8.0.1",
-    "@serwist/sw": "^8.0.1",
+    "@serwist/next": "latest",
+    "@serwist/sw": "latest",
     "@tanstack/react-query": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
@@ -32,16 +32,15 @@
     "react-dom": "latest",
     "react-dropzone": "latest",
     "react-icons": "latest",
-    "react-use-audio-player": "^2.2.0",
+    "react-use-audio-player": "latest",
     "tailwind-merge": "latest",
     "tailwindcss": "latest",
-    "tailwindcss-animate": "^1.0.7",
-    "vercel": "^32.7.2",
-    "zustand": "^4.4.7"
+    "tailwindcss-animate": "latest",
+    "zustand": "latest"
   },
   "devDependencies": {
-    "prettier": "^3.0.3",
-    "prettier-plugin-tailwindcss": "^0.5.6",
-    "typescript": "5.3.2"
+    "prettier": "latest",
+    "prettier-plugin-tailwindcss": "latest",
+    "typescript": "latest"
   }
 }
