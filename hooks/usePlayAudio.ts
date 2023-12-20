@@ -1,58 +1,38 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useAudioPlayer } from 'react-use-audio-player';
+import { useNavigationStore } from '@/stores/useNavigationStore';
+import { useFetchAudioData } from './useFetchAudio';
 
-function splitTextIntoSentences(text) {
-  return text.match(/[^\.!\?]+[\.!\?]+/g);
-}
+export const usePlayAudio = (currentPageText?: string, numPages?: number) => {
+  const { load, playing, togglePlayPause, cleanup } = useAudioPlayer();
+  const audioContextRef = useRef(new AudioContext());
+  const { goToNextPage } = useNavigationStore();
+  const { data, isSuccess, isLoading } = useFetchAudioData(currentPageText, audioContextRef);
 
-export const usePlayAudio = (currentPageText) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentChunkIndex, setCurrentChunkIndex] = useState(0);
-  const { load, playing, togglePlayPause } = useAudioPlayer();
-  const textChunks = useRef([]);
+  const onPlaybackEnd = useCallback(() => {
+    goToNextPage(numPages);
+  }, [goToNextPage, numPages]);
 
   useEffect(() => {
-    if (currentPageText) {
-      textChunks.current = splitTextIntoSentences(currentPageText).map(
-        (sentence) => `https://gttsfastapi.vercel.app/tts/en?text=${encodeURIComponent(sentence)}`,
-      );
-      setCurrentChunkIndex(0);
+    if (isSuccess && data) {
+      const wavUrl = URL.createObjectURL(data.wavBlob);
+      load(wavUrl, {
+        autoplay: false,
+        html5: true,
+        format: 'wav',
+        onend: onPlaybackEnd,
+      });
+      return () => {
+        URL.revokeObjectURL(wavUrl);
+      };
     }
-  }, [currentPageText]);
+  }, [isSuccess, data, load, onPlaybackEnd]);
 
-  const preloadNextSentence = useCallback(async (nextSentence) => {
-    await fetch(nextSentence);
-    console.log('Preloaded successfully: ', nextSentence);
+  useEffect(() => {
+    return () => {
+      cleanup();
+    };
   }, []);
 
-  const playNextSentence = useCallback(
-    (nextSentence) => {
-      load(`https://gttsfastapi.vercel.app/tts/en?text=${encodeURIComponent(nextSentence)}`, {
-        autoplay: true,
-        html5: true,
-        format: 'mp3',
-      });
-    },
-    [load],
-  );
-
-  useEffect(() => {
-    if (textChunks.current.length > 0 && currentChunkIndex < textChunks.current.length) {
-      load(textChunks.current[currentChunkIndex], {
-        autoplay: true,
-        html5: true,
-        format: 'mp3',
-        onload: () => {
-          setIsLoading(false);
-          preloadNextSentence(textChunks.current[currentChunkIndex + 1]);
-        },
-        onend: () => {
-          setCurrentChunkIndex((index) => (index + 1) % textChunks.current.length);
-          playNextSentence(textChunks.current[currentChunkIndex]);
-        },
-      });
-    }
-  }, [currentChunkIndex, load]);
-
-  return { playing, togglePlayPause, isLoading };
+  return { playing, togglePlayPause, isLoading, cleanup };
 };

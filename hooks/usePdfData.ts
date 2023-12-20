@@ -12,7 +12,7 @@ async function fetchPdfData(fileName: string, pageNumber: number) {
     const numPages = pdfDoc.numPages;
     const currentPageText = await extractTextFromPage(pdfDoc, pageNumber);
 
-    return { blobUrl, numPages, currentPageText };
+    return { blobUrl, numPages, currentPageText, fileName };
   } catch (error) {
     console.error(error);
     throw error;

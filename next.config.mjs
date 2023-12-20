@@ -9,9 +9,9 @@ const withSerwist = withSerwistInit({
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  experimental: {
-    ppr: true,
-  },
+  // experimental: {
+  //   ppr: true,
+  // },
   typescript: {
     ignoreBuildErrors: true,
   },
