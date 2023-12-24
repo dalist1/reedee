@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import TanStackProvider from "./providers";
+import { Analytics } from '@vercel/analytics/react'
 
 const APP_NAME = "Reedee";
 const APP_DESCRIPTION = "Enable your reading superpower.";
@@ -52,7 +53,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable}`}>
       <body className={`font-poppins ${gochi_hand.variable} w-full h-full`}>
-        <TanStackProvider>{children}</TanStackProvider>
+        <TanStackProvider>
+          {children}
+          <Analytics />
+        </TanStackProvider>
       </body>
     </html>
   );

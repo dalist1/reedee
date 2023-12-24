@@ -1,38 +1,62 @@
-import { useEffect, useCallback, useState, useRef } from 'react';
-import { useAudioPlayer } from 'react-use-audio-player';
-import { useNavigationStore } from '@/stores/useNavigationStore';
-import { useFetchAudioData } from './useFetchAudio';
+import { useState, useCallback, useRef } from 'react';
+import axios from 'axios';
 
-export const usePlayAudio = (currentPageText?: string, numPages?: number) => {
-  const { load, playing, togglePlayPause, cleanup } = useAudioPlayer();
-  const audioContextRef = useRef(new AudioContext());
-  const { goToNextPage } = useNavigationStore();
-  const { data, isSuccess, isLoading } = useFetchAudioData(currentPageText, audioContextRef);
+export const usePlayAudio = (paragraph: string) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const sentences = paragraph.match(/[^.!?]+[.!?]+/g) || [];
+  const currentSentenceIndex = useRef(0);
+  const audioElementRef = useRef(new Audio());
 
-  const onPlaybackEnd = useCallback(() => {
-    goToNextPage(numPages);
-  }, [goToNextPage, numPages]);
-
-  useEffect(() => {
-    if (isSuccess && data) {
-      const wavUrl = URL.createObjectURL(data.wavBlob);
-      load(wavUrl, {
-        autoplay: false,
-        html5: true,
-        format: 'wav',
-        onend: onPlaybackEnd,
+  const prefetchAudio = useCallback(async (text: string) => {
+    try {
+      const response = await axios.get(`https://gttsfastapi.vercel.app/tts/en`, {
+        params: { text },
+        responseType: 'blob',
       });
-      return () => {
-        URL.revokeObjectURL(wavUrl);
-      };
+      return URL.createObjectURL(response.data);
+    } catch (error) {
+      console.error('Error fetching audio:', error);
+      throw error;
     }
-  }, [isSuccess, data, load, onPlaybackEnd]);
-
-  useEffect(() => {
-    return () => {
-      cleanup();
-    };
   }, []);
 
-  return { playing, togglePlayPause, isLoading, cleanup };
+  const playSentence = useCallback(
+    async (index) => {
+      if (index >= sentences.length || index < 0) {
+        setIsPlaying(false);
+        return;
+      }
+
+      setIsPlaying(true);
+      currentSentenceIndex.current = index;
+      audioElementRef.current.src = await prefetchAudio(sentences[index]);
+      audioElementRef.current.play();
+
+      audioElementRef.current.onended = () => {
+        playSentence(index + 1);
+      };
+    },
+    [sentences, prefetchAudio],
+  );
+
+  const togglePlayPause = useCallback(() => {
+    const audioElement = audioElementRef.current;
+
+    if (!audioElement.src) {
+      playSentence(currentSentenceIndex.current);
+    } else if (audioElement.paused) {
+      audioElement.play();
+      setIsPlaying(true);
+    } else {
+      audioElement.pause();
+      setIsPlaying(false);
+    }
+  }, [playSentence]);
+
+  return {
+    togglePlayPause,
+    isPlaying,
+  };
 };
+
+export default usePlayAudio;

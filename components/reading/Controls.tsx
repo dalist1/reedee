@@ -4,17 +4,17 @@ import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
 import { FaPlay, FaPause } from 'react-icons/fa6';
 import { TbArrowBackUp, TbArrowForwardUp } from 'react-icons/tb';
 import { FaGear } from 'react-icons/fa6';
-import { usePlayAudio } from '@/hooks/usePlayAudio';
 import AnimatedLike from '@/components/reading/AnimatedLike';
 import StyledDropdownMenu from '@/components/settings/SettingsModal';
 import Ripple from '@/components/ui/ripple';
 import { useRipple } from '@/components/ui/use-ripple';
-import Loading from '@/components/Loading';
+// import Loading from '@/components/Loading';
 import { useNavigationStore } from '@/stores/useNavigationStore';
+import usePlayAudio from '@/hooks/usePlayAudio';
 
-export default function Controls({ currentPage, numPages, currentPageText, fileName }) {
+export default function Controls({ currentPage, numPages, currentPageText, fileName, nextPageText }) {
   const { ripples, onClick, onClear } = useRipple();
-  const { playing, togglePlayPause, isLoading } = usePlayAudio(currentPageText, numPages);
+  const { isPlaying, togglePlayPause } = usePlayAudio(currentPageText)
   const { goToNextPage, goToPreviousPage } = useNavigationStore()
 
   return (
@@ -25,7 +25,9 @@ export default function Controls({ currentPage, numPages, currentPageText, fileN
       <button
         className={`justify-items flex cursor-pointer items-center p-3 ${currentPage === 1 ? 'cursor-not-allowed text-gray-300' : 'text-gray-500 hover:text-white'
           }`}
-        onClick={() => currentPage !== 1 && goToPreviousPage(numPages)}
+        onClick={() =>
+          goToPreviousPage(numPages)
+        }
         disabled={currentPage === 1}
       >
         <TbArrowBackUp size={30} />
@@ -33,14 +35,13 @@ export default function Controls({ currentPage, numPages, currentPageText, fileN
 
       <button
         className="z-10 relative cursor-pointer overflow-hidden rounded-full bg-blue-900/50 p-3 text-white shadow-sm hover:bg-blue-900/70"
-        onClick={(event) => {
-          togglePlayPause();
-          onClick(event);
-        }}
+        onClick={() => togglePlayPause()}
       >
-        {isLoading ? <Loading color="sky" /> : playing ? <FaPause size={26} /> : <FaPlay size={26} />}
-        <Ripple ripples={ripples} onClear={onClear} className="absolute inset-0" />
+        {isPlaying ? <FaPause size={26} /> : <FaPlay size={26} />}
+        <Ripple ripples={ripples} onClick={onClick} onClear={onClear} className="absolute inset-0" />
       </button>
+
+
 
       <button
         className={`justify-items flex cursor-pointer items-center p-3 ${currentPage === numPages ? 'cursor-not-allowed text-neutral-700' : 'text-gray-300 hover:text-white'

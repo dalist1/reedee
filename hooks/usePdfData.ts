@@ -11,8 +11,9 @@ async function fetchPdfData(fileName: string, pageNumber: number) {
 
     const numPages = pdfDoc.numPages;
     const currentPageText = await extractTextFromPage(pdfDoc, pageNumber);
+    const nextPageText = await extractTextFromPage(pdfDoc, pageNumber + 1);
 
-    return { blobUrl, numPages, currentPageText, fileName };
+    return { blobUrl, numPages, currentPageText, fileName, nextPageText };
   } catch (error) {
     console.error(error);
     throw error;

@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/DropZone.tsx", "app/page.tsx", "app/dalist/page.tsx", "app/layout.tsx", "components/ui/dialog.tsx", "next.config.mjs", "components/settings/config.js", "components/settings/OptionsList.tsx", "app/test/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/DropZone.tsx", "app/page.tsx", "app/dalist/page.tsx", "app/layout.tsx", "components/ui/dialog.tsx", "next.config.mjs", "components/settings/config.js", "components/settings/OptionsList.tsx", "app/test/page.tsx", "hooks/usePlayAudio.ts"],
   "exclude": ["node_modules"]
 }
