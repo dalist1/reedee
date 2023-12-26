@@ -11,13 +11,20 @@ import { ReadingProps } from '@/types/reading';
 import { useSummaryStore } from '@/stores/useSummaryStore';
 import { useTakeawaysStore } from '@/stores/useTakeawaysStore';
 import { FaChevronLeft } from 'react-icons/fa6';
+import usePlayAudio from '@/hooks/usePlayAudio';
 
 export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
   const takeaways = useTakeawaysStore((st) => st.isTakeawaysEnabled);
   const summary = useSummaryStore((st) => st.isSummaryEnabled);
 
+
   const { currentPage } = useNavigationStore();
   const { data: pdfData } = usePdfData(fileName, currentPage);
+
+  // Cleanup on back button
+
+  const { cleanup } = usePlayAudio(pdfData.currentPageText)
+
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
@@ -26,6 +33,7 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
         <button
           className="absolute right-6 top-6 flex items-center justify-center gap-x-4 rounded-2xl bg-slate-800 p-3"
           onClick={() => {
+            cleanup()
             setIsReadingVisible(false);
           }}
         >
@@ -65,7 +73,6 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
             numPages={pdfData.numPages}
             currentPageText={pdfData.currentPageText}
             currentPage={currentPage}
-            nextPageText={pdfData.nextPageText}
           />
         </div>
         <div className="pointer-events-none fixed bottom-0 left-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
