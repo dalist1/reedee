@@ -10,11 +10,9 @@ import Ripple from '@/components/ui/ripple';
 import { useRipple } from '@/components/ui/use-ripple';
 import Loading from '@/components/Loading';
 import { useNavigationStore } from '@/stores/useNavigationStore';
-import usePlayAudio from '@/hooks/usePlayAudio';
 
-export default function Controls({ currentPage, numPages, currentPageText, fileName }) {
+export default function Controls({ currentPage, numPages, fileName, isPlaying, togglePlayPause, isLoading, cleanup }) {
   const { ripples, onClick, onClear } = useRipple();
-  const { isPlaying, togglePlayPause, cleanup, isLoading } = usePlayAudio(currentPageText, numPages, currentPage)
   const { goToNextPage, goToPreviousPage } = useNavigationStore()
 
   // Handling page navigation and audio cleanup
@@ -46,7 +44,7 @@ export default function Controls({ currentPage, numPages, currentPageText, fileN
       <button
         className="z-10 relative cursor-pointer overflow-hidden rounded-full bg-blue-900/50 p-3 text-white shadow-sm hover:bg-blue-900/70"
         onClick={() => togglePlayPause()}
-        disabled={isLoading}  // Disable the button while loading
+        disabled={isLoading}
       >
         {isLoading ? <Loading /> : (isPlaying ? <FaPause size={26} /> : <FaPlay size={26} />)}
         <Ripple ripples={ripples} onClick={onClick} onClear={onClear} className="absolute inset-0" />

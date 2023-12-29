@@ -3,6 +3,11 @@ import { twMerge } from "tailwind-merge";
 import { Fragment } from "react";
 import * as pdfjs from 'pdfjs-dist';
 
+export const splitSentence = (text) => {
+  const regex = /(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s/gm;
+  return text.split(regex)
+}
+
 export default pdfjs;
 
 export function cn(...inputs: ClassValue[]) {

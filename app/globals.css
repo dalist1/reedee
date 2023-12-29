@@ -23,3 +23,26 @@ body,
   background-color: rgb(14 165 233 / 0.5);
   border-radius: 14px;
 }
+
+/* Add this in your global CSS file */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+.highlight-animation {
+  animation: slideIn 0.5s ease forwards;
+}
+
+.highlight-background {
+  background-color: rgba(59, 130, 246, 0.4); /* Tailwind's blue-500 with adjusted opacity */
+  border-radius: 0.375rem; /* Tailwind's rounded-xl value */
+  transition: all 0.5s ease;
+  pointer-events: none; /* Prevents the element from capturing mouse events */
+}

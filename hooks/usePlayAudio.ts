@@ -1,11 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigationStore } from '@/stores/useNavigationStore';
+import { splitSentence } from '@/lib/utils';
 
 export const usePlayAudio = (currentPageText: string, numPages?: number, currentPage?: number) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const regex = /(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s/gm;
-  const sentences = useRef(currentPageText.split(regex));
+  const [playingSentence, setPlayingSentence] = useState('');
+  const sentences = useRef(splitSentence(currentPageText));
   const currentSentenceIndex = useRef(0);
   const audioElementRef = useRef<HTMLAudioElement>(new Audio());
   const audioQueue = useRef([]);
@@ -60,6 +61,11 @@ export const usePlayAudio = (currentPageText: string, numPages?: number, current
       setIsPlaying(true);
       currentSentenceIndex.current = index;
 
+      // Get the current sentence
+      const sentence = sentences.current[index];
+
+      setPlayingSentence(sentence);
+
       let audioSrc;
       if (audioQueue.current.length > 0) {
         audioSrc = audioQueue.current.shift();
@@ -84,6 +90,7 @@ export const usePlayAudio = (currentPageText: string, numPages?: number, current
             goToNextPage(numPages);
           } else {
             setIsPlaying(false);
+            setPlayingSentence('');
           }
         }
       };
@@ -95,7 +102,6 @@ export const usePlayAudio = (currentPageText: string, numPages?: number, current
     if (isLoading) {
       return;
     }
-
     if (!audioElementRef.current.src) {
       playSentence(0);
     } else if (audioElementRef.current.paused) {
@@ -120,7 +126,7 @@ export const usePlayAudio = (currentPageText: string, numPages?: number, current
 
   useEffect(() => {
     cleanup();
-    sentences.current = currentPageText.split(regex) || [];
+    sentences.current = splitSentence(currentPageText) || [];
     if (isPlaying) {
       const firstSentence = sentences.current[0];
       prefetchAudio(firstSentence).then((firstAudioSrc) => {
@@ -139,6 +145,7 @@ export const usePlayAudio = (currentPageText: string, numPages?: number, current
     isPlaying,
     cleanup,
     isLoading,
+    playingSentence,
   };
 };
 

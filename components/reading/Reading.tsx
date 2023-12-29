@@ -21,10 +21,8 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
   const { currentPage } = useNavigationStore();
   const { data: pdfData } = usePdfData(fileName, currentPage);
 
-  // Cleanup on back button
-
-  const { cleanup } = usePlayAudio(pdfData.currentPageText)
-
+  // Passing down Audio Controls to child comps.
+  const { cleanup, playingSentence, togglePlayPause, isLoading, isPlaying, } = usePlayAudio(pdfData.currentPageText, pdfData.numPages, currentPage)
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
@@ -42,7 +40,6 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
         </button>
 
 
-
         <div className="z-10 my-20 flex flex-col items-center justify-center gap-y-10 p-6">
           {summary && (
             <div className="mx-auto h-full w-full max-w-6xl items-start sm:flex-col sm:max-lg:grid-cols-6 sm:max-lg:items-center">
@@ -55,7 +52,13 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
           )}
 
           <Suspense fallback={<Loading name="page content." color="blue" />}>
-            <PageContent pageText={pdfData.currentPageText} currentPage={currentPage} numPages={pdfData.numPages} />
+            <PageContent
+              currentPageText={pdfData.currentPageText}
+              currentPage={currentPage}
+              numPages={pdfData.numPages}
+              playingSentence={playingSentence}
+              isPlaying={isPlaying}
+            />
           </Suspense>
 
           {takeaways && (
@@ -71,8 +74,11 @@ export function Reading({ setIsReadingVisible, fileName }: ReadingProps) {
           <Controls
             fileName={fileName}
             numPages={pdfData.numPages}
-            currentPageText={pdfData.currentPageText}
             currentPage={currentPage}
+            togglePlayPause={togglePlayPause}
+            isLoading={isLoading}
+            isPlaying={isPlaying}
+            cleanup={cleanup}
           />
         </div>
         <div className="pointer-events-none fixed bottom-0 left-0 z-0 h-14 w-full bg-black to-transparent backdrop-blur-xl [-webkit-mask-image:linear-gradient(to_top,black,transparent)] dark:bg-black"></div>
