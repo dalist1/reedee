@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://reedee.vercel.app"><img src="./public/Reedee.png" alt="Logo" height=170></a>
+  <a href="https://reedee.vercel.app"><img src="./public/ReedeePNG.png" alt="Logo" height=170></a>
 </p>
 <p align="center">
     Enable your reading superpower.
@@ -7,7 +7,7 @@
 
 ## What is Reedee?
 
-> **Reedee is under active development.** 
+> **Reedee is under active development.**
 
 Reedee is a blazing fast PDF reader, all you have to do is upload the PDF document, and Reedee will take care of the rest.
 
@@ -23,7 +23,6 @@ Reedee is a blazing fast PDF reader, all you have to do is upload the PDF docume
 - 🎨 [Tailwind CSS](https://tailwindcss.com/)
 - 🖌️ [Shadcn/ui](https://ui.shadcn.com/)
 - 🎬 [Framer Motion](https://www.framer.com/api/motion/)
-
 
 ## Features 🌟
 
@@ -44,9 +43,9 @@ Reedee is a blazing fast PDF reader, all you have to do is upload the PDF docume
 - [ ] AI generated page summaries and takeaways
 - [x] Add audio playback functionality
 - [ ] Chrome cast for PDF file sharing
-- [ ] Add offline support
-- [ ] Support for Google Assistant voice summarization commands
-
+- [x] Add offline support
+- [x] Support for Google Assistant voice summarization commands
+- [x] Audio player background playback support
 
 ## Contributing 🤝
 
