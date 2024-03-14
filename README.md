@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://reedee.vercel.app"><img src="./public/ReedeePNG.png" alt="Logo" height=170></a>
+  <a href="https://reedee.vercel.app"><img src="https://raw.githubusercontent.com/dalist1/reedee/master/public/icon-192x192.png" alt="Logo" height=170></a>
 </p>
 <p align="center">
     Enable your reading superpower.
