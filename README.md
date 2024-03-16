@@ -5,15 +5,14 @@
     Enable your reading superpower.
 </p>
 
-## What is Reedee?
-
 > **Reedee is under active development.**
+
+## What is Reedee?
 
 Reedee is a blazing fast PDF reader, all you have to do is upload the PDF document, and Reedee will take care of the rest.
 
 ## Privacy 🔒
 
-- Bring your PDF, Reedee will do the rest.
 - Your data is stored within your Web Browser using IndexedDB.
 
 ## Tech Stack 🛠️
@@ -26,9 +25,10 @@ Reedee is a blazing fast PDF reader, all you have to do is upload the PDF docume
 
 ## Features 🌟
 
-- User-friendly interface for browsing and interacting with documents.
+- User-friendly interface for browsing and interacting with PDFs.
 - Audio playback for reading aloud functionality.
 - Customizable settings for appearance and typography.
+- Bionic Text support.
 - Progressive Web App (PWA) support.
 - AI page summarization and takeaways.
 
@@ -46,6 +46,7 @@ Reedee is a blazing fast PDF reader, all you have to do is upload the PDF docume
 - [x] Add offline support
 - [x] Support for Google Assistant voice summarization commands
 - [x] Audio player background playback support
+- [ ] TTS via Transformers.js with WebGPU Support 
 
 ## Contributing 🤝
 
